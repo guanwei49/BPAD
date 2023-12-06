@@ -30,7 +30,7 @@ Finally, some future directions are discussed in order to promote the evolution 
 - [scikit-learn](https://scikit-learn.org)
 - [pm4py](https://pm4py.fit.fraunhofer.de/)
 - [pyg](https://pytorch-geometric.readthedocs.io/en/latest/index.html)
-### Examples 
+## Examples 
     ```
     python \generator\gen_anomalous_eventlog_syn.py  # get the synthetic dataset with anomalies
     python \generator\gen_anomalous_real_life_log.py  # get the real-life dataset with anomalies
