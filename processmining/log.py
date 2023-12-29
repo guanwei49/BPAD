@@ -407,10 +407,13 @@ class EventLog(object):
                 })
         return pd.DataFrame(frames)
 
-    def save(self, name, postfix='', p=0.0, number=1, dir= EVENTLOG_DIR):
+    def save(self, name, postfix= None, p=0.0, number=1, dir= EVENTLOG_DIR):
         name = os.path.split(name)[1].split('.')[0]
 
-        base_name = f'{name}-{p:.2f}-{number}-{postfix}'
+        if postfix is None:
+            base_name = f'{name}-{p:.2f}-{number}'
+        else:
+            base_name = f'{name}-{p:.2f}-{number}-{postfix}'
         cache_file = os.path.join(EVENTLOG_CACHE_DIR,f'{base_name}.pkl.gz')
 
         if os.path.exists(cache_file):

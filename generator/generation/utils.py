@@ -29,7 +29,7 @@ from generator.generation.model import ProcessMap
 
 
 def generate_for_process_model(process_model, size=5000, anomalies=None, anomaly_p=0.3, num_attr=0,
-                               activity_dependency_ps=.25, attribute_dependency_ps=.75, p_var=5, seed=0, postfix='', dir=None):
+                               activity_dependency_ps=.25, attribute_dependency_ps=.75, p_var=5, seed=0, postfix=None, dir=None):
     if not isinstance(anomaly_p, Iterable):
         anomaly_p = [anomaly_p]
 
