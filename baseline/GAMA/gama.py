@@ -8,7 +8,7 @@ from baseline.GAMA.GAT_AE import GAT_AE
 
 
 class GAMA():
-    def __init__(self, seed=None ,n_epochs=20 ,batch_size=64, lr=0.0002 ,b1=0.5 ,b2=0.999 ,hidden_dim = 64, GAT_heads = 4, decoder_num_layers = 2,TF_styles:str='FAP'):
+    def __init__(self, seed=None ,n_epochs=20 ,batch_size=16, lr=0.0002 ,b1=0.5 ,b2=0.999 ,hidden_dim = 64, GAT_heads = 4, decoder_num_layers = 2,TF_styles:str='FAP'):
         if TF_styles not in ['AN', 'PAV', 'FAP']:
             raise Exception('"TF_styles" must be a value in ["AN","PAV", "FAP"]')
 
