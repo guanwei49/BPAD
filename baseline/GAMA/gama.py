@@ -48,11 +48,10 @@ class GAMA():
             train_loss = 0.0
             train_num = 0
             # 自定义的dataloader
-            indexs = [i for i in range(len(dataset))]  # 打乱顺序
-            random.shuffle(indexs)
-
-            for bathc_i in tqdm(range(self.batch_size, len(indexs)+1, self.batch_size)):
-                this_batch_indexes = indexs[bathc_i - self.batch_size:bathc_i]
+            indexes = [i for i in range(len(dataset))]  # 打乱顺序
+            random.shuffle(indexes)
+            for bathc_i in tqdm(range(self.batch_size, len(indexes)+1, self.batch_size)):
+                this_batch_indexes = indexes[bathc_i - self.batch_size:bathc_i]
                 nodes_list = [dataset.node_xs[i] for i in this_batch_indexes]
                 edge_indexs_list = [dataset.edge_indexs[i] for i in this_batch_indexes]
                 Xs_list = []
