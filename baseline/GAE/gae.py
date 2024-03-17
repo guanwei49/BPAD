@@ -7,7 +7,7 @@ from baseline.GAE.model import GAEModel
 
 
 class GAE():
-    def __init__(self, seed=None ,n_epochs=2 ,lr=0.0002 ,b1=0.5 ,b2=0.999 ,hidden_dim=64):
+    def __init__(self, seed=None ,n_epochs=20 ,lr=0.0002 ,b1=0.5 ,b2=0.999 ,hidden_dim=64):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.seed = seed
         self.n_epochs = n_epochs
