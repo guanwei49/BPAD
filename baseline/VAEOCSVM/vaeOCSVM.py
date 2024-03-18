@@ -65,7 +65,7 @@ class VAEOCSVM():
 
                 loss = self.loss_function(fake_X, X, mu, logvar,mask)
 
-                train_loss += loss.item() * X[0].shape[0]
+                train_loss += (loss.item() * X[0].shape[0]) /len(dataset.attribute_dims)
                 train_num += X[0].shape[0]
                 loss.backward()
                 optimizer.step()

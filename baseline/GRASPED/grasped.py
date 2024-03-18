@@ -77,7 +77,7 @@ class GRASPED():
 
                     # loss+=loss_func(pred,true)
 
-                train_loss += loss.item() * Xs[0].shape[0]
+                train_loss += (loss.item() * Xs[0].shape[0]) /len(dataset.attribute_dims)
                 train_num += Xs[0].shape[0]
                 loss.backward()
                 optimizer.step()

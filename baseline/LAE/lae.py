@@ -70,7 +70,7 @@ class LAE():
 
                 loss = loss_func(fake_X, X)
 
-                train_loss += loss.item() * X.shape[0]
+                train_loss += (loss.item() * X.shape[0]) / len(dataset.attribute_dims)
                 train_num += X.shape[0]
                 loss.backward()
                 optimizer.step()

@@ -41,7 +41,7 @@ class GAEModel(nn.Module):
         self.dropout = nn.Dropout(0.3)
         self.linear = nn.Linear(hidden_dim * 2, 1)
 
-    def forward(self, graph):
+    def forward(self, graph, node_nums):
         # 对节点进行信息聚合
         # 注意这里需要传入边特征 edge_attr
         if self.with_edge_attr:
@@ -58,17 +58,23 @@ class GAEModel(nn.Module):
         # 应用 ReLU 激活函数
         x = F.relu(x)
 
-        ms = []
+        batch_ms = []
 
-        for i in range(len(x)):
-            for j in range(len(x)):
-                ms.append(torch.cat((x[i], x[j])))
+        h = torch.split(x, tuple(node_nums), dim=0)
+        for batch, node_num in enumerate(node_nums):
+            ms = []
+            for i in range(node_num):
+                temp = h[batch][i].repeat((node_num, 1))
+                ms.append(torch.cat((temp, h[batch]),1))
+            ms = torch.cat(ms, 0)
+            batch_ms.append(ms)
+        batch_ms = torch.cat(batch_ms, 0)
+        batch_ms = self.linear(batch_ms)
+        batch_ms = torch.sigmoid(batch_ms)
+        batch_ms = batch_ms.squeeze()
 
-        ms = torch.stack(ms, 0)
-        ms = self.linear(ms)
-        ms = torch.sigmoid(ms)
-        ms = ms.squeeze()
+        batch_ms = torch.split(batch_ms, tuple(node_nums * node_nums), dim=0)
 
-        return ms
+        return batch_ms
 
 

@@ -8,7 +8,7 @@ from baseline.GAMA.GAT_AE import GAT_AE
 
 
 class GAMA():
-    def __init__(self, seed=None ,n_epochs=20 ,batch_size=16, lr=0.0002 ,b1=0.5 ,b2=0.999 ,hidden_dim = 64, GAT_heads = 4, decoder_num_layers = 2,TF_styles:str='FAP'):
+    def __init__(self, seed=None ,n_epochs=20 ,batch_size= 64, lr=0.0005 ,b1=0.5 ,b2=0.999 ,hidden_dim = 64, GAT_heads = 4, decoder_num_layers = 2,TF_styles:str='FAP'):
         if TF_styles not in ['AN', 'PAV', 'FAP']:
             raise Exception('"TF_styles" must be a value in ["AN","PAV", "FAP"]')
 
@@ -37,7 +37,10 @@ class GAMA():
 
         optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, betas=(self.b1, self.b2))
 
-        scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.5)
+        scheduler = torch.optim.lr_scheduler.ExponentialLR(
+            optimizer=optimizer,
+            gamma=0.85
+        )
 
         Xs = []
         for i, dim in enumerate(dataset.attribute_dims):
@@ -77,7 +80,7 @@ class GAMA():
                     true = Xs_list[i][~mask]
                     loss += loss_func(pred, true)
 
-                train_loss += loss.item()
+                train_loss += loss.item()/len(dataset.attribute_dims)
                 train_num += 1
                 loss.backward()
                 optimizer.step()
