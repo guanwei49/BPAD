@@ -36,10 +36,11 @@ future directions are discussed in order to promote the evolution of business pr
 
 - [PyTorch==1.13.0](https://pytorch.org)
 - [TensorFlow==2.6.0](https://www.tensorflow.org/)
-- [NumPy](https://numpy.org)
-- [scikit-learn](https://scikit-learn.org)
-- [pm4py](https://pm4py.fit.fraunhofer.de/)
-- [pyg](https://pytorch-geometric.readthedocs.io/en/latest/index.html)
+- [NumPy==1.21.5](https://numpy.org)
+- [scikit-learn==1.0.2](https://scikit-learn.org)
+- [pm4py==2.7.4](https://pm4py.fit.fraunhofer.de/)
+- [pyg==2.3.0](https://pytorch-geometric.readthedocs.io/en/latest/index.html)
+- [pandas==1.3.5](https://pandas.pydata.org/)
 
 ## Examples
 
