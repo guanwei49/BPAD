@@ -6,9 +6,9 @@ from gensim.models import Word2Vec
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.preprocessing import StandardScaler
 
-class Word2vecBPAD():
+class W2VLOF():
     def __init__(self):
-        self.name= 'Word2vecBPAD'
+        self.name= 'W2V-LOF'
 
     def create_models(self, cases, window, min_count):
         '''
@@ -58,15 +58,13 @@ class Word2vecBPAD():
         self.scl = StandardScaler()
         vectors = self.scl.fit_transform(vectors)
 
-        contamination_param = len(
-            dataset.anomaly_indices) / dataset.num_cases  ### The amount of contamination of the data set
+        self.model = LocalOutlierFactor(n_jobs=8)
 
-        self.model = LocalOutlierFactor(n_neighbors=10, contamination=contamination_param, n_jobs=8)
+        self.model.fit(vectors)
 
-        trace_level_abnormal_scores =  self.model.fit_predict(vectors) ## Label is 1 for an inlier and -1 for an outlier according to the LOF score and the contamination parameter.
+        scores = - self.model.negative_outlier_factor_  # 越接近1，越好， 越接近正无穷，越差
 
-        trace_level_abnormal_scores[trace_level_abnormal_scores == 1] = 0
-        trace_level_abnormal_scores[trace_level_abnormal_scores == -1] = 1
+        trace_level_abnormal_scores =  (scores-scores.min())/(scores.max()-scores.min())
 
         attr_Shape = (dataset.num_cases, dataset.max_len, dataset.num_attributes)
         attr_level_abnormal_scores = np.zeros(attr_Shape)

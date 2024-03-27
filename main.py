@@ -10,7 +10,7 @@ from baseline.GAE.gae import GAE
 from baseline.GAMA.gama import GAMA
 from baseline.GRASPED.grasped import GRASPED
 from baseline.LAE.lae import LAE
-from baseline.Sylvio import Word2vecBPAD
+from baseline.Sylvio import W2VLOF
 from baseline.VAE.vae import VAE
 from baseline.VAEOCSVM.vaeOCSVM import VAEOCSVM
 from baseline.dae import DAE
@@ -128,7 +128,7 @@ if __name__ == '__main__':
         dict(ad=GAE), ## Multi-perspective, trace-level       ---Graph Autoencoders for Business Process Anomaly Detection
         dict(ad=GRASPED), ## Multi-perspective, attr-level    ---GRASPED: A GRU-AE Network Based Multi-Perspective Business Process Anomaly Detection Model
         dict(ad=Leverage), # control flow, trace-level       ---Keeping our rivers clean: Information-theoretic online anomaly detection for streaming business process events
-        dict(ad=Word2vecBPAD), # control flow, trace-level     ---Anomaly Detection on Event Logs with a Scarcity of Labels
+        dict(ad=W2VLOF), # control flow, trace-level     ---Anomaly Detection on Event Logs with a Scarcity of Labels
         dict(ad=VAEOCSVM) # control flow, trace-level   ---Variational Autoencoder for Anomaly Detection in Event Data in Online Process Mining
     ]
 

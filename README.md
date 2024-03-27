@@ -33,14 +33,24 @@ future directions are discussed in order to promote the evolution of business pr
 |     GAMA     | 2023  |  Multi-perspective  | Attribute-level  |                                                                     [GAMA: A Multi-graph-based Anomaly Detection Framework for Business Processes via Graph Neural Networks](https://www.techrxiv.org/articles/preprint/GAMA_A_Multi-graph-based_Anomaly_Detection_Framework_for_Business_Processes_via_Graph_Neural_Networks/23627850)                                                                     |
 
 ## Requirements
-
+### Win
 - [PyTorch==1.13.0](https://pytorch.org)
-- [TensorFlow==2.6.0](https://www.tensorflow.org/)
+- [tensorflow-gpu==2.6.0](https://www.tensorflow.org/)
 - [NumPy==1.21.5](https://numpy.org)
 - [scikit-learn==1.0.2](https://scikit-learn.org)
 - [pm4py==2.7.4](https://pm4py.fit.fraunhofer.de/)
 - [pyg==2.3.0](https://pytorch-geometric.readthedocs.io/en/latest/index.html)
 - [pandas==1.3.5](https://pandas.pydata.org/)
+- [gensim==4.1.2](https://radimrehurek.com/gensim/)
+### Linux
+- [PyTorch==1.13.0](https://pytorch.org)
+- [tensorflow==2.10.0](https://www.tensorflow.org/)
+- [NumPy==1.24.3](https://numpy.org)
+- [scikit-learn==1.3.0](https://scikit-learn.org)
+- [pm4py==2.7.4](https://pm4py.fit.fraunhofer.de/)
+- [pyg==2.3.0](https://pytorch-geometric.readthedocs.io/en/latest/index.html)
+- [pandas==2.0.3](https://pandas.pydata.org/)
+- [gensim==4.3.0](https://radimrehurek.com/gensim/)
 
 ## Examples
 

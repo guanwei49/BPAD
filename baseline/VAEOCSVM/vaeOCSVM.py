@@ -20,7 +20,7 @@ class VAEOCSVM():
         self.b1 =b1
         self.b2 =b2
         self.hidden_size =hidden_size
-        self.name = 'VAEOCSVM'
+        self.name = 'VAE-OCSVM'
 
     def loss_function(self, recon_x, x, mu, logvar, avai_mask):
         MSE = F.mse_loss(recon_x * avai_mask, x * avai_mask, size_average=False)
@@ -101,7 +101,12 @@ class VAEOCSVM():
         zs=zs.numpy()
 
         clf = OneClassSVM(gamma='auto', nu=0.5) #-1 for outliers and 1 for inliers.
-        trace_level_abnormal_scores = clf.fit_predict(zs)
+
+        clf.fit(zs)
+
+        scores = -clf.score_samples(zs)
+
+        trace_level_abnormal_scores = (scores-scores.min())/(scores.max()-scores.min())
 
         trace_level_abnormal_scores[trace_level_abnormal_scores == 1] = 0
         trace_level_abnormal_scores[trace_level_abnormal_scores == -1] = 1
