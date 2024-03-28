@@ -108,10 +108,6 @@ class VAEOCSVM():
 
         trace_level_abnormal_scores = (scores-scores.min())/(scores.max()-scores.min())
 
-        trace_level_abnormal_scores[trace_level_abnormal_scores == 1] = 0
-        trace_level_abnormal_scores[trace_level_abnormal_scores == -1] = 1
-
-
         attr_Shape = (dataset.num_cases, dataset.max_len, dataset.num_attributes)
         attr_level_abnormal_scores = np.zeros(attr_Shape)
         event_level_abnormal_scores = attr_level_abnormal_scores.max((2))
