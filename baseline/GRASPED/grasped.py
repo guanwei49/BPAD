@@ -35,7 +35,7 @@ class GRASPED():
         mask = torch.BoolTensor(dataset.mask)
         Dataset = Data.TensorDataset(*Xs, mask)
 
-        dataloader = DataLoader(Dataset, batch_size=self.batch_size, shuffle=True, num_workers=4,
+        dataloader = DataLoader(Dataset, batch_size=self.batch_size, shuffle=True, num_workers=0,
                                       pin_memory=True, drop_last=True)
 
         self.model = GRU_AE(dataset.attribute_dims, self.enc_hidden_dim, self.encoder_num_layers, self.decoder_num_layers, self.dec_hidden_dim)
@@ -98,7 +98,7 @@ class GRASPED():
         tensorDataset = Data.TensorDataset(*Xs,mask)
 
         dataloader = DataLoader(tensorDataset, batch_size=self.batch_size,
-                                       shuffle=False, num_workers=4, pin_memory=True)
+                                       shuffle=False, num_workers=0, pin_memory=True)
         self.model.eval()
         with torch.no_grad():
             print("*" * 10 + "detecting" + "*" * 10)

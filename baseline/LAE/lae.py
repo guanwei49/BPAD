@@ -27,7 +27,7 @@ class LAE():
         case_lens = torch.LongTensor(dataset.case_lens)
         tensorDataset = Data.TensorDataset(X, case_lens)
 
-        dataloader = DataLoader(tensorDataset, batch_size=self.batch_size, shuffle=True, num_workers=8, pin_memory=True,
+        dataloader = DataLoader(tensorDataset, batch_size=self.batch_size, shuffle=True, num_workers=0, pin_memory=True,
                                 drop_last=True)
 
         if type(self.seed) is int:
@@ -91,7 +91,7 @@ class LAE():
         tensorDataset = Data.TensorDataset(X, case_lens)
 
         detect_dataloader = DataLoader(tensorDataset, batch_size=self.batch_size,
-                                       shuffle=False, num_workers=4, pin_memory=True)
+                                       shuffle=False, num_workers=0, pin_memory=True)
 
         attr_Shape = (dataset.num_cases, dataset.max_len, dataset.num_attributes)
 

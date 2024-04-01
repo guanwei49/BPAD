@@ -38,7 +38,7 @@ class VAEOCSVM():
         case_lens = torch.LongTensor(dataset.case_lens)
         tensorDataset = Data.TensorDataset(X, case_lens)
 
-        dataloader = DataLoader(tensorDataset, batch_size=self.batch_size, shuffle=True, num_workers=4, pin_memory=True,
+        dataloader = DataLoader(tensorDataset, batch_size=self.batch_size, shuffle=True, num_workers=0, pin_memory=True,
                                 drop_last=True)
 
         self.model =  VAEModel(int(X.shape[-1]), int(self.hidden_size * 3), self.hidden_size, isCuda=(self.device.type == 'cuda'))
@@ -84,7 +84,7 @@ class VAEOCSVM():
 
         tensorDataset = Data.TensorDataset(X)
         detect_dataloader = DataLoader(tensorDataset, batch_size=self.batch_size,
-                                       shuffle=False, num_workers=8, pin_memory=True)
+                                       shuffle=False, num_workers=0, pin_memory=True)
 
         self.model.eval()
         zs=[]
