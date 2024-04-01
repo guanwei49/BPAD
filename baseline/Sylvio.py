@@ -64,7 +64,10 @@ class W2VLOF():
 
         scores = - self.model.negative_outlier_factor_  # 越接近1，越好， 越接近正无穷，越差
 
-        trace_level_abnormal_scores =  (scores-scores.min())/(scores.max()-scores.min())
+        if scores.max()==1 and scores.min()==1:
+            trace_level_abnormal_scores = scores
+        else:
+            trace_level_abnormal_scores =  (scores-scores.min())/(scores.max()-scores.min())
 
         attr_Shape = (dataset.num_cases, dataset.max_len, dataset.num_attributes)
         attr_level_abnormal_scores = np.zeros(attr_Shape)
