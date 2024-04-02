@@ -273,7 +273,7 @@ class GAT_AE(nn.Module):
             graph = graphs[i]
 
             if graph.is_cuda:
-                attr_reconstruction_outputs.append(torch.zeros(self.max_seq_len, batch_size, output_dim).cuda())  # 存储decoder的所有输出
+                attr_reconstruction_outputs.append(torch.zeros(self.max_seq_len, batch_size, output_dim).to(Xs[0].device))  # 存储decoder的所有输出
             else:
                 attr_reconstruction_outputs.append(torch.zeros(self.max_seq_len, batch_size, output_dim))
             enc_output_ = self.encoders[i](graph,batch_size) # enc_output_:[batch_size, self.max_seq_len , hidden_dim]
