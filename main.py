@@ -32,9 +32,9 @@ def fit_and_eva(dataset_name, ad, fit_kwargs=None , ad_kwargs=None):
 
     start_time = time.time()
 
+    print(dataset_name)
     # Dataset
     dataset = Dataset(dataset_name, beta=0.005)
-    print(dataset_name)
 
     # AD
     ad = ad(**ad_kwargs)
@@ -133,7 +133,7 @@ if __name__ == '__main__':
     ]
 
 
-    print(dataset_names)
+    print('number of datasets:' + str(len(dataset_names)))
     for ad in ads:
         for d in dataset_names:
             p = Process(target=fit_and_eva, kwargs={ 'dataset_name' : d,  **ad })
