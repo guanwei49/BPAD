@@ -70,25 +70,25 @@ Nine commonly used real-life datasets:
 
 i) **_[BPIC12](https://doi.org/10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f)_**: Event log of a loan application process
 
-ii) **_BPIC13_**: Logs of Volvo IT incident and problem management.
+ii) **_[BPIC13](https://doi.org/10.4121/uuid:a7ce5c55-03a7-4583-b855-98b86e1a2b07)_**: Logs of Volvo IT incident and problem management.
 
-iii) **_BPIC15_**: This data is provided by five Dutch municipalities. The data contains all building permit
+iii) **_[BPIC15](https://doi.org/10.4121/uuid:31a308ef-c844-48da-948c-305d167a0ec1)_**: This data is provided by five Dutch municipalities. The data contains all building permit
 applications over a period of approximately four years.
 
-iv) **_BPIC17_**: This event log pertains to a loan application process of a Dutch financial institute. The data
-contains all applications filed trough an online system in 2016 and their subsequent events until February 1st 2017, 15:11.
+iv) **_[BPIC17](https://doi.org/10.4121/uuid:5f3067df-f10b-45da-b98b-86ae4c7a310b)_**: This event log pertains to a loan application process of a Dutch financial institute. The data
+contains all applications filed through an online system in 2016 and their subsequent events until February 1st 2017, 15:11.
 
-v) **_BPIC20_**: The dataset contains events pertaining to two years of travel expense claims. In 2017, events were
+v) **_[BPIC20](https://doi.org/10.4121/uuid:52fb97d4-4588-43c9-9d04-3604d4613b51)_**: The dataset contains events pertaining to two years of travel expense claims. In 2017, events were
 collected for two departments, in 2018 for the entire university.
 
-vi) **_Billing_**: This log contains events that pertain to the billing of medical services provided by a hospital.
+vi) **_[Billing](https://doi.org/10.4121/uuid:76c46b83-c930-4798-a1c9-4be94dfeb741)_**: This log contains events that pertain to the billing of medical services provided by a hospital.
 
-vii) **_Receipt_**: This log contains records of the receiving phase of the building permit application process in an
+vii) **_[Receipt](https://doi.org/10.4121/12709127.v2)_**: This log contains records of the receiving phase of the building permit application process in an
 anonymous municipality.
 
-viii) **_RTFMP_**: Real-life event log of an information system managing road traffic fines.
-
-ix) **_Sepsis_**: This log contains events of sepsis cases from a hospital.
+viii) **_[RTFMP](https://doi.org/10.4121/uuid:270fd440-1057-4fb9-89a9-b699b47990f5)_**: Real-life event log of an information system managing road traffic fines.
+    
+ix) **_[Sepsis](https://doi.org/10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460)_**: This log contains events of sepsis cases from a hospital.
 
 Eight synthetic logs: i.e., **_Paper_**,  _**P2P**_, **_Small_**, **_Medium_**, **_Large_**, **_Huge_**, **_Gigantic_**,
 and **_Wide_**.
