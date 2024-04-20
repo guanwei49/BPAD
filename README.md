@@ -68,7 +68,7 @@ future directions are discussed in order to promote the evolution of business pr
 
 Nine commonly used real-life datasets:
 
-i) **_BPIC12_**: Event log of a loan application process
+i) **_[BPIC12](https://doi.org/10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f)_**: Event log of a loan application process
 
 ii) **_BPIC13_**: Logs of Volvo IT incident and problem management.
 
@@ -76,9 +76,7 @@ iii) **_BPIC15_**: This data is provided by five Dutch municipalities. The data 
 applications over a period of approximately four years.
 
 iv) **_BPIC17_**: This event log pertains to a loan application process of a Dutch financial institute. The data
-contains all applications filed trough an online system in 2016 and their subsequent events until February 1st 2017, 15:
-
-11.
+contains all applications filed trough an online system in 2016 and their subsequent events until February 1st 2017, 15:11.
 
 v) **_BPIC20_**: The dataset contains events pertaining to two years of travel expense claims. In 2017, events were
 collected for two departments, in 2018 for the entire university.
