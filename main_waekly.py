@@ -40,7 +40,7 @@ def fit_and_eva(dataset_name, ad, label_percent, fit_kwargs=None, ad_kwargs=None
     # AD
     ad = ad(**ad_kwargs)
     print(ad.name)
-    resPath=os.path.join(ROOT_DIR, f'result_{ad.name}_{label_percent}).csv')
+    resPath=os.path.join(ROOT_DIR, f'result_{ad.name}_{label_percent}.csv')
     try:
         # Train and save
         ad.fit(dataset, **fit_kwargs)
