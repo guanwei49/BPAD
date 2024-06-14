@@ -15,6 +15,7 @@ class WAKE():
     def __init__(self, seed=None, beta=0.3, batch_size=64, n_epochs_1=14, n_epochs_2=10, n_epochs_3=4, lr=0.0002,
                  p_lambda=10, encoder_num_layers=4, decoder_num_layers=2, enc_hidden_dim=64, dec_hidden_dim=64):
         '''
+        :param seed: value of Pytorch random seed
         :param beta: Control the ratio of labeled anomalies to unlabeled samples
         :param batch_size:
         :param n_epochs_1: epoch of pre-training stage
@@ -22,9 +23,6 @@ class WAKE():
         :param n_epochs_3: epoch of fine-tuning stage
         :param p_lambda: a hyper-parameter to balance the contributions of two parts to the joint loss function
         :param lr: learning rate
-        :param b1: adam: decay of first order momentum of gradient
-        :param b2: adam: decay of first order momentum of gradient
-        :param seed: value of Pytorch random seed
         :param enc_hidden_dim: hidden dimensions of BGRU layers in the encoder of feature encoder
         :param encoder_num_layers: number of BGRU layers in the encoder of feature encoder
         :param decoder_num_layers: number of GRU layers in the decoder of feature encoder
@@ -260,7 +258,7 @@ class WAKE():
             Xs_clean.append(torch.LongTensor(np.delete(dataset.features[i], dataset.labeled_indices, 0)))
         clean_mask = torch.BoolTensor(np.delete(dataset.mask, dataset.labeled_indices, 0))
         clean_dataset = Data.TensorDataset(*Xs_clean, clean_mask)
-        clean_dataloader = DataLoader(clean_dataset, batch_size=self.batch_size, shuffle=True, num_workers=4,
+        clean_dataloader = DataLoader(clean_dataset, batch_size=self.batch_size, shuffle=True, num_workers=0,
                                       pin_memory=True,
                                       drop_last=True)
         encoder, decoder = self.train_phase1(clean_dataloader, dataset.attribute_dims)
@@ -280,7 +278,7 @@ class WAKE():
         train_labels = torch.cat((train_labels, torch.ones(len(dataset.labeled_indices) * repeat_times)))
         train_dataset = Data.TensorDataset(*train_Xs, train_mask, train_labels)
 
-        train_dataloader = DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=4,
+        train_dataloader = DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=0,
                                       pin_memory=True, drop_last=True)
 
         end2end_decoder = self.train_phase2(train_dataloader, dataset.attribute_dims, dataset.max_len, encoder, decoder)
@@ -292,7 +290,7 @@ class WAKE():
         labels = torch.LongTensor(dataset.weak_labels)
 
         ori_dataset = Data.TensorDataset(*Xs, mask, labels)
-        ori_dataloader = DataLoader(ori_dataset, batch_size=self.batch_size, shuffle=True, num_workers=4,
+        ori_dataloader = DataLoader(ori_dataset, batch_size=self.batch_size, shuffle=True, num_workers=0,
                                     pin_memory=True,
                                     drop_last=True)
         reconstruct_encoder, reconstruct_decoder = self.train_phase3(ori_dataloader, dataset.attribute_dims, encoder,
