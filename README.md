@@ -30,7 +30,7 @@ future directions are discussed in order to promote the evolution of business pr
 |  Leverage  | 2022 |   Control-flow    |   Trace-level   |                                      [Keeping our rivers clean: Information-theoretic online anomaly detection for streaming business process events](https://www.sciencedirect.com/science/article/abs/pii/S0306437921001125)                                      |
 |  BINetv3   | 2022 | Multi-perspective | Attribute-level |                                                             [BINet: Multi-perspective business process anomaly classification](https://www.sciencedirect.com/science/article/abs/pii/S0306437919305101)                                                             |
 |  GRASPED   | 2023 | Multi-perspective | Attribute-level |                                                             [GRASPED: A GRU-AE Network Based Multi-Perspective Business Process Anomaly Detection Model](https://ieeexplore.ieee.org/document/10088425)                                                             |
-|    GAMA    | 2023 | Multi-perspective | Attribute-level | [GAMA: A Multi-graph-based Anomaly Detection Framework for Business Processes via Graph Neural Networks](https://www.techrxiv.org/articles/preprint/GAMA_A_Multi-graph-based_Anomaly_Detection_Framework_for_Business_Processes_via_Graph_Neural_Networks/23627850) |
+|    GAMA    | 2024 | Multi-perspective | Attribute-level | [GAMA: A Multi-graph-based Anomaly Detection Framework for Business Processes via Graph Neural Networks](https://www.techrxiv.org/articles/preprint/GAMA_A_Multi-graph-based_Anomaly_Detection_Framework_for_Business_Processes_via_Graph_Neural_Networks/23627850) |
 
 ## Requirements
 
@@ -61,7 +61,7 @@ future directions are discussed in order to promote the evolution of business pr
     ```
     python \generator\gen_anomalous_eventlog_syn.py  # get the synthetic dataset with anomalies
     python \generator\gen_anomalous_real_life_log.py  # get the real-life dataset with anomalies
-    python main.py # get the result for each method.
+    python main_unsup.py # get the result for each method.
     ```
 
 ## Datasets

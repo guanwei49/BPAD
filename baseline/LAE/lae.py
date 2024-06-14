@@ -19,6 +19,9 @@ class LAE():
         self.hidden_size = hidden_size
         self.name = 'LAE'
 
+        if type(self.seed) is int:
+            torch.manual_seed(self.seed)
+
 
     def fit(self, dataset):
         X = dataset.flat_onehot_features
@@ -30,13 +33,8 @@ class LAE():
         dataloader = DataLoader(tensorDataset, batch_size=self.batch_size, shuffle=True, num_workers=0, pin_memory=True,
                                 drop_last=True)
 
-        if type(self.seed) is int:
-            torch.manual_seed(self.seed)
         attribute_dim_index = torch.LongTensor(
             [sum(dataset.attribute_dims[:i + 1]) for i in range(len(dataset.attribute_dims))])
-
-        if type(self.seed) is int:
-            torch.manual_seed(self.seed)
 
         self.model = LSTMAE(int(dataset.flat_onehot_features.shape[-1]), self.hidden_size, num_layers=2, isCuda=(self.device.type == 'cuda'))
         loss_func = nn.MSELoss()

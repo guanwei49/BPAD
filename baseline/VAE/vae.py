@@ -19,6 +19,9 @@ class VAE():
         self.hidden_size =hidden_size
         self.name = 'VAE'
 
+        if type(self.seed) is int:
+            torch.manual_seed(self.seed)
+
     def loss_function(self, recon_x, x, mu, logvar, avai_mask):
         MSE = F.mse_loss(recon_x * avai_mask, x * avai_mask, size_average=False)
         KLD_element = mu.pow(2).add_(logvar.exp()).mul_(-1).add_(1).add_(logvar)
@@ -27,9 +30,6 @@ class VAE():
         return loss
 
     def fit(self, dataset):
-        if type(self.seed) is int:
-            torch.manual_seed(self.seed)
-
         X = dataset.flat_onehot_features_2d
         X = torch.Tensor(X)
         case_lens = torch.LongTensor(dataset.case_lens)

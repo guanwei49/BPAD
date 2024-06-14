@@ -46,12 +46,10 @@ def to_categorical(y, num_classes=None, dtype='float32'):
     return categorical
 
 class Dataset(object):
-    def __init__(self, dataset_name=None, beta=0, go_backwards=False, pad_mode=PadMode.POST):
+    def __init__(self, dataset_name=None, beta=0, label_percent =0):
         # Public properties
         self.dataset_name = dataset_name
-        self.go_backwards = go_backwards
-        self.pad_mode = pad_mode
-        self.beta=beta
+        self.beta=beta   #used by GAMA
         self.attribute_types = None
         self.attribute_keys = None
         self.classes = None
@@ -62,6 +60,7 @@ class Dataset(object):
         self.node_dims=[]
         self.edge_indexs = []
         self.node_xs = []
+        self.label_percent = label_percent   # Used by weakly supervised methods to control the percentage of anomalies labeled during training
 
         # Private properties
         self._mask = None
@@ -74,6 +73,9 @@ class Dataset(object):
         # Load dataset
         if self.dataset_name is not None:
             self.load(self.dataset_name)
+
+        self.labeled_indices = np.random.choice(self.anomaly_indices, size=int(
+            len(self.anomaly_indices) * self.label_percent),replace=False)  ### Used by weakly supervised methods to indicate indices of labeled anomalies during training
 
     def load(self, dataset_name):
         """
@@ -222,15 +224,19 @@ class Dataset(object):
                          self.encoders, self.attribute_types, self.attribute_keys), f)
 
     @property
+    def weak_labels(self):
+        z = np.zeros(self.num_cases)
+        for i in self.labeled_indices:
+            z[i] = 1
+        return z
+
+    @property
     def mask(self):
         if self._mask is None:
             self._mask = np.ones(self._features[0].shape, dtype=bool)
             for m, j in zip(self._mask, self.case_lens):
                 m[:j] = False
-        if self.pad_mode == PadMode.PRE:
-            return self._mask[:, ::-1]
-        elif self.pad_mode == PadMode.POST:
-            return self._mask
+        return self._mask
 
     @property
     def event_log(self):
@@ -344,16 +350,7 @@ class Dataset(object):
 
     @property
     def features(self):
-        if self.pad_mode == PadMode.PRE:
-            if self.go_backwards:
-                return [f[:, ::-1] for f in self._features]
-            else:
-                return [f[:, ::-1] for f in self._reverse_features]
-        elif self.pad_mode == PadMode.POST:
-            if self.go_backwards:
-                return self._reverse_features
-            else:
-                return self._features
+        return self._features
 
     @property
     def flat_features(self):
@@ -533,31 +530,3 @@ class Dataset(object):
 
         # Attribute keys (names)
         self.attribute_keys = [a.replace(':', '_').replace(' ', '_') for a in self.event_log.event_attribute_keys]
-
-    # def gen_graphs(self):
-    #     trace_graphs=[]
-    #     for i in range(self.num_cases):
-    #         attr_graphs=[]
-    #         edge = []
-    #         xs = []
-    #         for attr_index in range(self.num_attributes):
-    #             xs.append([self.features[attr_index][i][0]])
-    #         activity2nodeIndex = {}
-    #         pre = 0
-    #         for activity_index in range(1, self.case_lens[i]):
-    #             activity = self.features[0][i][activity_index]
-    #             if activity in activity2nodeIndex.keys():
-    #                 nodeIndex = activity2nodeIndex[activity]
-    #                 edge.append([pre, nodeIndex])  # 添加有向边
-    #             else:
-    #                 nodeIndex = len(xs[0])
-    #                 activity2nodeIndex[activity] = nodeIndex
-    #                 for attr_index in range(self.num_attributes):
-    #                     xs[attr_index].append([self.features[attr_index][i][activity_index]])
-    #                 edge.append([pre, nodeIndex])  # 添加有向边
-    #             pre = nodeIndex
-    #         edge_index = torch.tensor(edge, dtype=torch.long)
-    #         for attr_index in range(self.num_attributes):
-    #             attr_graphs.append( Data(torch.tensor(xs[attr_index], dtype=torch.float), edge_index=edge_index.T))
-    #         trace_graphs.append(attr_graphs)
-    #     return trace_graphs

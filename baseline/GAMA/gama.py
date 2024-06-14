@@ -24,12 +24,11 @@ class GAMA():
         self.decoder_num_layers =decoder_num_layers
         self.TF_styles=TF_styles
         self.name = 'GAMA'
-
-
-    def fit(self, dataset):
         if type(self.seed) is int:
             torch.manual_seed(self.seed)
 
+
+    def fit(self, dataset):
         self.model = GAT_AE(dataset.attribute_dims, dataset.max_len, self.hidden_dim, self.GAT_heads, self.decoder_num_layers, self.TF_styles)
         loss_func = nn.CrossEntropyLoss()
 

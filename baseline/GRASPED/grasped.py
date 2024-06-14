@@ -24,10 +24,11 @@ class GRASPED():
         self.dec_hidden_dim = dec_hidden_dim
         self.name = 'GRASPED'
 
-
-    def fit(self, dataset):
         if type(self.seed) is int:
             torch.manual_seed(self.seed)
+
+
+    def fit(self, dataset):
         attribute_dims=dataset.attribute_dims
         Xs = []
         for i, dim in enumerate(attribute_dims):

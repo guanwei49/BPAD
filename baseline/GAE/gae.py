@@ -17,12 +17,11 @@ class GAE():
         self.batch_size = batch_size
         self.hidden_dim =hidden_dim
         self.name='GAE'
-
+        if type(self.seed) is int:
+            torch.manual_seed(self.seed)
 
 
     def fit(self, dataset):
-        if type(self.seed) is int:
-            torch.manual_seed(self.seed)
         if dataset.trace_graphs_GAE[0].edge_attr is not None:
             self.model = GAEModel(int(dataset.attribute_dims[0]), self.hidden_dim, self.device, True, len(dataset.trace_graphs_GAE[0].edge_attr[0]))
         else:
