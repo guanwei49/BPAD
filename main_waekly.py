@@ -120,7 +120,7 @@ if __name__ == '__main__':
         dict(ad=WAKE),  ## Multi-perspective, attr-level    --- WAKE: A Weakly Supervised Business Process Anomaly Detection Framework via a Pre-Trained Autoencoder.
     ]
 
-    label_percents=[0.01,0.1]
+    label_percents=[0.01, 0.1]
 
     print('number of datasets:' + str(len(dataset_names)))
     for label_percent in label_percents:

@@ -74,8 +74,8 @@ class Dataset(object):
         if self.dataset_name is not None:
             self.load(self.dataset_name)
 
-        self.labeled_indices = np.random.choice(self.anomaly_indices, size=int(
-            len(self.anomaly_indices) * self.label_percent),replace=False)  ### Used by weakly supervised methods to indicate indices of labeled anomalies during training
+        self.labeled_indices = np.random.choice(self.anomaly_indices, size=max(int(
+            len(self.anomaly_indices) * self.label_percent),1), replace=False)  ### Used by weakly supervised methods to indicate indices of labeled anomalies during training
 
     def load(self, dataset_name):
         """
