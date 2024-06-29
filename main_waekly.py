@@ -123,7 +123,7 @@ if __name__ == '__main__':
     print('number of datasets:' + str(len(dataset_names)))
     for label_percent in label_percents:
         for ad in ads:
-            for d in dataset_names_syn:
+            for d in dataset_names:
                 p = Process(target=fit_and_eva, kwargs={'dataset_name' : d,  **ad, 'label_percent':label_percent})
                 p.start()
                 p.join()
