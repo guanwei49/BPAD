@@ -42,13 +42,13 @@ class NaiveAnomalyDetector(AnomalyDetector):
         self._model = dict(zip(keys, -np.log(counts / dataset.num_cases)))
 
     def detect(self, dataset):
-        scores = np.zeros_like(dataset.binary_targets)
+        scores = np.zeros_like(dataset.binary_targets, dtype=float)
         scores[:, :, 0] = self.get_anomaly_scores(self.traces(dataset))[:, np.newaxis]
-        attr_level_abnormal_scores = scores > -np.log(0.02)
+        # attr_level_abnormal_scores = scores > -np.log(0.02)
 
-        trace_level_abnormal_scores = attr_level_abnormal_scores.max((1, 2))
-        event_level_abnormal_scores = attr_level_abnormal_scores.max((2))
-        return trace_level_abnormal_scores, event_level_abnormal_scores, attr_level_abnormal_scores
+        trace_level_abnormal_scores = scores.max((1, 2))
+
+        return trace_level_abnormal_scores, None, None
 
 
     def traces(self, dataset):
@@ -85,5 +85,5 @@ class SamplingAnomalyDetector(AnomalyDetector):
         scores = np.zeros_like(dataset.binary_targets)
         scores[candidates, :, 0] = ~miner.conformance_check(dataset.features[0][candidates])
         trace_level_abnormal_scores = scores.max((1, 2))
-        event_level_abnormal_scores = scores.max((2))
-        return trace_level_abnormal_scores, event_level_abnormal_scores, scores
+        # event_level_abnormal_scores = scores.max((2))
+        return trace_level_abnormal_scores, None, None

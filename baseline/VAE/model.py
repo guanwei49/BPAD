@@ -12,7 +12,7 @@ from torchvision import transforms
 
 class VAEModel(nn.Module):
     # x --> fc1 --> relu --> fc2 --> z --> fc3 --> relu -->fc4 --> x'
-    def __init__(self, input_size, layer1, layer2, isCuda):
+    def __init__(self, input_size, layer1, layer2, device):
         '''
         layer1: dim of hidden layer1
         layer2: dim of hidden layer2
@@ -20,7 +20,7 @@ class VAEModel(nn.Module):
         super(VAEModel, self).__init__()
 
         self.input_size = input_size
-        self.isCuda = isCuda
+        self.device = device
 
         self.fc1 = nn.Linear(input_size, layer1)
         self.fc21 = nn.Linear(layer1, layer2)  # encode
@@ -30,8 +30,6 @@ class VAEModel(nn.Module):
 
         self.relu = nn.ReLU()
 
-        if self.isCuda:
-            self.cuda()
 
         # initialize weights
         nn.init.xavier_uniform(self.fc1.weight, gain=np.sqrt(2))
@@ -48,10 +46,7 @@ class VAEModel(nn.Module):
 
     def reparametrize(self, mu, logvar):
         std = torch.exp(logvar / 2)
-        if self.isCuda:
-            eps = torch.cuda.FloatTensor(std.size()).normal_()
-        else:
-            eps = torch.FloatTensor(std.size()).normal_()
+        eps = torch.FloatTensor(std.size()).normal_().to(self.device)
         eps = Variable(eps)
         return eps * std + mu
 

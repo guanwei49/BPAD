@@ -8,10 +8,10 @@ class Leverage():
         return self
 
     def detect(self, dataset):
-        activity = dataset.flat_onehot_features[:, :, :dataset.attribute_dims[0]]  #adaptor： only remains control flow
-        activity = activity.reshape((activity.shape[0], np.prod(activity.shape[1:])))
+        activitySeq = dataset.onehot_features[0]  #adaptor： only remains control flow
+        activitySeq = activitySeq.reshape((activitySeq.shape[0], np.prod(activitySeq.shape[1:])))
 
-        XE = np.matrix(activity)
+        XE = np.matrix(activitySeq)
 
         HE = XE * np.linalg.pinv(XE.T * XE) * XE.T
         l = np.diagonal(HE)
@@ -31,8 +31,4 @@ class Leverage():
 
         trace_level_abnormal_scores = w * l
 
-        attr_Shape = (dataset.num_cases, dataset.max_len, dataset.num_attributes)
-        attr_level_abnormal_scores = np.zeros(attr_Shape)
-        event_level_abnormal_scores = attr_level_abnormal_scores.max((2))
-
-        return trace_level_abnormal_scores, event_level_abnormal_scores, attr_level_abnormal_scores
+        return trace_level_abnormal_scores, None, None

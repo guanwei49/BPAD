@@ -69,8 +69,5 @@ class W2VLOF():
         else:
             trace_level_abnormal_scores =  (scores-scores.min())/(scores.max()-scores.min())
 
-        attr_Shape = (dataset.num_cases, dataset.max_len, dataset.num_attributes)
-        attr_level_abnormal_scores = np.zeros(attr_Shape)
-        event_level_abnormal_scores = attr_level_abnormal_scores.max((2))
 
-        return trace_level_abnormal_scores, event_level_abnormal_scores, attr_level_abnormal_scores
+        return trace_level_abnormal_scores, None, None

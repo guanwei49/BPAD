@@ -46,7 +46,7 @@ def to_categorical(y, num_classes=None, dtype='float32'):
     return categorical
 
 class Dataset(object):
-    def __init__(self, dataset_name=None, beta=0, label_percent =0):
+    def __init__(self, dataset_name=None, beta=0, label_percent = 0):
         # Public properties
         self.dataset_name = dataset_name
         self.beta=beta   #used by GAMA

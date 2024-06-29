@@ -79,10 +79,6 @@ class GAE():
     def detect(self, dataset):
         self.model.eval()
         with torch.no_grad():
-            ##useless
-            attr_Shape = (dataset.num_cases, dataset.max_len, dataset.num_attributes)
-            attr_level_abnormal_scores = np.zeros(attr_Shape)
-
             loss_func = nn.BCELoss()
 
             trace_level_abnormal_scores = []
@@ -115,8 +111,6 @@ class GAE():
                 pre = bathc_i
 
         trace_level_abnormal_scores = np.array(trace_level_abnormal_scores)
-        ##useless
-        event_level_abnormal_scores = attr_level_abnormal_scores.max((2))
 
-        return trace_level_abnormal_scores,event_level_abnormal_scores,attr_level_abnormal_scores
+        return trace_level_abnormal_scores,None,None
 

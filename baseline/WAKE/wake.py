@@ -23,9 +23,9 @@ class WAKE():
         :param n_epochs_3: epoch of fine-tuning stage
         :param p_lambda: a hyper-parameter to balance the contributions of two parts to the joint loss function
         :param lr: learning rate
-        :param enc_hidden_dim: hidden dimensions of BGRU layers in the encoder of feature encoder
         :param encoder_num_layers: number of BGRU layers in the encoder of feature encoder
         :param decoder_num_layers: number of GRU layers in the decoder of feature encoder
+        :param enc_hidden_dim: hidden dimensions of BGRU layers in the encoder of feature encoder
         :param dec_hidden_dim: hidden dimensions of GRU layers in the decoder of feature encoder
         '''
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -45,9 +45,9 @@ class WAKE():
         if type(self.seed) is int:
             torch.manual_seed(self.seed)
 
-    def train_phase1(self, clean_dataloader, attribute_dims):
+    def train_phase1(self, unlabeled_dataloader, attribute_dims):
         '''
-        :param clean_dataloader: only contains clean dataset
+        :param unlabeled_dataloader: only contains unlabeled dataset
         :param attribute_dims:  Number of attribute values per attribute : list
         :return: encoder,decoder
         '''
@@ -65,7 +65,7 @@ class WAKE():
         for epoch in range(int(self.n_epochs_1)):
             train_loss = 0.0
             train_num = 0
-            for i, Xs in enumerate(tqdm(clean_dataloader)):
+            for i, Xs in enumerate(tqdm(unlabeled_dataloader)):
                 mask = Xs[-1]
                 Xs = Xs[:-1]
                 mask = mask.to(self.device)
@@ -253,15 +253,15 @@ class WAKE():
         return reconstruct_encoder, reconstruct_decoder
 
     def fit(self, dataset):
-        Xs_clean = []
+        Xs_unlabeled = []
         for i, dim in enumerate(dataset.attribute_dims):
-            Xs_clean.append(torch.LongTensor(np.delete(dataset.features[i], dataset.labeled_indices, 0)))
-        clean_mask = torch.BoolTensor(np.delete(dataset.mask, dataset.labeled_indices, 0))
-        clean_dataset = Data.TensorDataset(*Xs_clean, clean_mask)
-        clean_dataloader = DataLoader(clean_dataset, batch_size=self.batch_size, shuffle=True, num_workers=0,
+            Xs_unlabeled.append(torch.LongTensor(np.delete(dataset.features[i], dataset.labeled_indices, 0)))
+        unlabeled_mask = torch.BoolTensor(np.delete(dataset.mask, dataset.labeled_indices, 0))
+        unlabeled_dataset = Data.TensorDataset(*Xs_unlabeled, unlabeled_mask)
+        unlabeled_dataloader = DataLoader(unlabeled_dataset, batch_size=self.batch_size, shuffle=True, num_workers=0,
                                       pin_memory=True,
                                       drop_last=True)
-        encoder, decoder = self.train_phase1(clean_dataloader, dataset.attribute_dims)
+        encoder, decoder = self.train_phase1(unlabeled_dataloader, dataset.attribute_dims)
 
         anomalies_num = int(dataset.weak_labels.sum())
         repeat_times = int((len(dataset.weak_labels) * self.beta) / ((1 - self.beta) * anomalies_num))
@@ -303,7 +303,6 @@ class WAKE():
         self.reconstruct_decoder = reconstruct_decoder
 
     def detect(self, dataset):
-
         Xs = []
         for i, dim in enumerate(dataset.attribute_dims):
             Xs.append(torch.LongTensor(dataset.features[i]))

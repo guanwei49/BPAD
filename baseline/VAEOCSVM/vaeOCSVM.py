@@ -33,7 +33,7 @@ class VAEOCSVM():
         return loss
 
     def fit(self, dataset):
-        activity = dataset.flat_onehot_features[:, :, :dataset.attribute_dims[0]]  # adaptor： only remains control flow
+        activity = dataset.onehot_features[0]  # adaptor： only remains control flow
         X = activity.reshape((activity.shape[0], np.prod(activity.shape[1:])))
         X = torch.Tensor(X)
         case_lens = torch.LongTensor(dataset.case_lens)
@@ -109,9 +109,6 @@ class VAEOCSVM():
 
         trace_level_abnormal_scores = (scores-scores.min())/(scores.max()-scores.min())
 
-        attr_Shape = (dataset.num_cases, dataset.max_len, dataset.num_attributes)
-        attr_level_abnormal_scores = np.zeros(attr_Shape)
-        event_level_abnormal_scores = attr_level_abnormal_scores.max((2))
 
-        return trace_level_abnormal_scores, event_level_abnormal_scores, attr_level_abnormal_scores
+        return trace_level_abnormal_scores, None, None
 

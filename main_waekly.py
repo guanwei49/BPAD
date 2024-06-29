@@ -6,19 +6,8 @@ from multiprocessing import Process
 
 import pandas as pd
 
-from baseline.GAE.gae import GAE
-from baseline.GAMA.gama import GAMA
-from baseline.GRASPED.grasped import GRASPED
-from baseline.LAE.lae import LAE
-from baseline.Sylvio import W2VLOF
-from baseline.VAE.vae import VAE
-from baseline.VAEOCSVM.vaeOCSVM import VAEOCSVM
+from baseline.DRL.drl import DRL
 from baseline.WAKE.wake import WAKE
-from baseline.dae import DAE
-from baseline.bezerra import SamplingAnomalyDetector, NaiveAnomalyDetector
-from baseline.binet.binet import BINetv3, BINetv2
-from baseline.boehmer import LikelihoodPlusAnomalyDetector
-from baseline.leverage import Leverage
 from utils.dataset import Dataset
 
 from utils.eval import cal_best_PRF
@@ -60,17 +49,24 @@ def fit_and_eva(dataset_name, ad, label_percent, fit_kwargs=None, ad_kwargs=None
         print(trace_p, trace_r, trace_f1, trace_aupr)
 
         ##event level
-        eventTemp = dataset.binary_targets.sum(2).flatten()
-        eventTemp[eventTemp > 1] = 1
-        event_p, event_r, event_f1, event_aupr = cal_best_PRF(eventTemp, event_level_abnormal_scores.flatten())
-        print("event")
-        print(event_p, event_r, event_f1, event_aupr)
+        if event_level_abnormal_scores is not None:
+            ##event level
+            eventTemp = dataset.binary_targets.sum(2).flatten()
+            eventTemp[eventTemp > 1] = 1
+            event_p, event_r, event_f1, event_aupr = cal_best_PRF(eventTemp, event_level_abnormal_scores.flatten())
+            print("event")
+            print(event_p, event_r, event_f1, event_aupr)
+        else:
+            event_p, event_r, event_f1, event_aupr = 0,0,0,0
 
         ##attr level
-        attr_p, attr_r, attr_f1, attr_aupr = cal_best_PRF(dataset.binary_targets.flatten(),
-                                                          attr_level_abnormal_scores.flatten())
-        print("attr")
-        print(attr_p, attr_r, attr_f1,attr_aupr)
+        if attr_level_abnormal_scores is not None:
+            attr_p, attr_r, attr_f1, attr_aupr = cal_best_PRF(dataset.binary_targets.flatten(),
+                                                              attr_level_abnormal_scores.flatten())
+            print("attr")
+            print(attr_p, attr_r, attr_f1,attr_aupr)
+        else:
+            attr_p, attr_r, attr_f1, attr_aupr = 0, 0, 0, 0
 
         datanew = pd.DataFrame([{'index':dataset_name,'trace_p': trace_p, "trace_r": trace_r,'trace_f1':trace_f1,'trace_aupr':trace_aupr,
                                  'event_p': event_p, "event_r": event_r, 'event_f1': event_f1, 'event_aupr': event_aupr,
@@ -117,15 +113,17 @@ if __name__ == '__main__':
     dataset_names_real.sort()
 
     ads = [
-        dict(ad=WAKE),  ## Multi-perspective, attr-level    --- WAKE: A Weakly Supervised Business Process Anomaly Detection Framework via a Pre-Trained Autoencoder.
+        # dict(ad=WAKE),  ## Multi-perspective, attr-level    --- WAKE: A Weakly Supervised Business Process Anomaly Detection Framework via a Pre-Trained Autoencoder.
+        dict(ad=DRL, ad_kwargs=dict(memory_size=2500, num_episodes=15))   ## Control flow, trace-level    --- Deep reinforcement learning for data-efficient weakly supervised business process anomaly detection
     ]
 
-    label_percents=[0.01, 0.1]
+    # label_percents=[0.01, 0.1]
+    label_percents=[0.1]
 
     print('number of datasets:' + str(len(dataset_names)))
     for label_percent in label_percents:
         for ad in ads:
-            for d in dataset_names:
+            for d in dataset_names_syn:
                 p = Process(target=fit_and_eva, kwargs={'dataset_name' : d,  **ad, 'label_percent':label_percent})
                 p.start()
                 p.join()

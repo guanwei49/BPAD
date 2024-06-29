@@ -44,7 +44,7 @@ def fit_and_eva(dataset_name, ad, fit_kwargs=None , ad_kwargs=None):
         # Train and save
         ad.fit(dataset, **fit_kwargs)
 
-        trace_level_abnormal_scores,event_level_abnormal_scores,attr_level_abnormal_scores=ad.detect(dataset)
+        trace_level_abnormal_scores,event_level_abnormal_scores,attr_level_abnormal_scores = ad.detect(dataset)
 
         end_time = time.time()
 
@@ -58,18 +58,24 @@ def fit_and_eva(dataset_name, ad, fit_kwargs=None , ad_kwargs=None):
         print("trace")
         print(trace_p, trace_r, trace_f1, trace_aupr)
 
-        ##event level
-        eventTemp = dataset.binary_targets.sum(2).flatten()
-        eventTemp[eventTemp > 1] = 1
-        event_p, event_r, event_f1, event_aupr = cal_best_PRF(eventTemp, event_level_abnormal_scores.flatten())
-        print("event")
-        print(event_p, event_r, event_f1, event_aupr)
+        if event_level_abnormal_scores is not None:
+            ##event level
+            eventTemp = dataset.binary_targets.sum(2).flatten()
+            eventTemp[eventTemp > 1] = 1
+            event_p, event_r, event_f1, event_aupr = cal_best_PRF(eventTemp, event_level_abnormal_scores.flatten())
+            print("event")
+            print(event_p, event_r, event_f1, event_aupr)
+        else:
+            event_p, event_r, event_f1, event_aupr = 0,0,0,0
 
         ##attr level
-        attr_p, attr_r, attr_f1, attr_aupr = cal_best_PRF(dataset.binary_targets.flatten(),
-                                                          attr_level_abnormal_scores.flatten())
-        print("attr")
-        print(attr_p, attr_r, attr_f1,attr_aupr)
+        if attr_level_abnormal_scores is not None:
+            attr_p, attr_r, attr_f1, attr_aupr = cal_best_PRF(dataset.binary_targets.flatten(),
+                                                              attr_level_abnormal_scores.flatten())
+            print("attr")
+            print(attr_p, attr_r, attr_f1,attr_aupr)
+        else:
+            attr_p, attr_r, attr_f1, attr_aupr = 0, 0, 0, 0
 
         datanew = pd.DataFrame([{'index':dataset_name,'trace_p': trace_p, "trace_r": trace_r,'trace_f1':trace_f1,'trace_aupr':trace_aupr,
                                  'event_p': event_p, "event_r": event_r, 'event_f1': event_f1, 'event_aupr': event_aupr,
@@ -117,8 +123,8 @@ if __name__ == '__main__':
 
     ads = [
         dict(ad=LikelihoodPlusAnomalyDetector),  ## Multi-perspective, attr-level    --- Multi-perspective anomaly detection in business process execution events (extended to support the use of external threshold)
-        dict(ad=NaiveAnomalyDetector),  # control flow, trace-level    ---Algorithms for anomaly detection of traces in logs of process aware information systems
-        dict(ad=SamplingAnomalyDetector),  # control flow, trace-level    ---Algorithms for anomaly detection of traces in logs of process aware information systems
+        dict(ad=NaiveAnomalyDetector),  # Control flow, trace-level    ---Algorithms for anomaly detection of traces in logs of process aware information systems
+        dict(ad=SamplingAnomalyDetector),  # Control flow, trace-level    ---Algorithms for anomaly detection of traces in logs of process aware information systems
         dict(ad=DAE, fit_kwargs=dict(epochs=20, batch_size=64)),  ## Multi-perspective, attr-level    ---Analyzing business process anomalies using autoencoders
         dict(ad=BINetv3, fit_kwargs=dict(epochs=20, batch_size=64)), ## Multi-perspective, attr-level  ---BINet: Multi-perspective business process anomaly classification
         dict(ad=BINetv2, fit_kwargs=dict(epochs=20, batch_size=64)), ## Multi-perspective, attr-level  ---BINet: Multivariate business process anomaly detection using deep learning
@@ -127,9 +133,9 @@ if __name__ == '__main__':
         dict(ad=LAE), ## Multi-perspective, attr-level  自己修改后使其能够检测attr-level      ---Autoencoders for improving quality of process event logs
         dict(ad=GAE), ## Multi-perspective, trace-level       ---Graph Autoencoders for Business Process Anomaly Detection
         dict(ad=GRASPED), ## Multi-perspective, attr-level    ---GRASPED: A GRU-AE Network Based Multi-Perspective Business Process Anomaly Detection Model
-        dict(ad=Leverage), # control flow, trace-level       ---Keeping our rivers clean: Information-theoretic online anomaly detection for streaming business process events
-        dict(ad=W2VLOF), # control flow, trace-level     ---Anomaly Detection on Event Logs with a Scarcity of Labels
-        dict(ad=VAEOCSVM) # control flow, trace-level   ---Variational Autoencoder for Anomaly Detection in Event Data in Online Process Mining
+        dict(ad=Leverage), # Control flow, trace-level       ---Keeping our rivers clean: Information-theoretic online anomaly detection for streaming business process events
+        dict(ad=W2VLOF), # Control flow, trace-level     ---Anomaly Detection on Event Logs with a Scarcity of Labels
+        dict(ad=VAEOCSVM) # Control flow, trace-level   ---Variational Autoencoder for Anomaly Detection in Event Data in Online Process Mining
     ]
 
 
