@@ -107,8 +107,8 @@ class LSTMAttentionNetwork(nn.Module):
         self.hidden_dim = hidden_dim
         self.lstm = nn.LSTM(input_dim, hidden_dim, batch_first=True)
         self.attention = MultiHeadAttention(d_model=hidden_dim, n_head = 1)
-        self.fc1 = nn.Linear(hidden_dim * trace_len, 1024 * trace_len)
-        self.fc2 = nn.Linear(1024 * trace_len, output_dim)
+        self.fc1 = nn.Linear(hidden_dim * trace_len, 2 * hidden_dim * trace_len)
+        self.fc2 = nn.Linear(2 * hidden_dim * trace_len, output_dim)
 
     def forward(self, x, mask):
         lstm_out, _ = self.lstm(x)

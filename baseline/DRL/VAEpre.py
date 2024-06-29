@@ -128,20 +128,23 @@ def PrewithVAE(dataset, device, batch_size = 32, n_epochs = 500, lr=0.001):
     z_l = []
     ri_l = []
 
+    model.eval()
+
     print("*" * 10 + "Preprocessing data with VAE" + "*" * 10)
-    for X, case_len in tqdm(detect_dataloader):
-        X = X.to(device)
-        mask = torch.zeros(X.shape).to(device)
+    with torch.no_grad():
+        for X, case_len in tqdm(detect_dataloader):
+            X = X.to(device)
+            mask = torch.zeros(X.shape).to(device)
 
-        fake_X, _, _, z = model(X)
+            fake_X, _, _, z = model(X)
 
-        for p, mylen in enumerate(dataset.attribute_dims[0] * case_len):
-            mask[p, :mylen] = 1
+            for p, mylen in enumerate(dataset.attribute_dims[0] * case_len):
+                mask[p, :mylen] = 1
 
-        ri = torch.norm(fake_X * mask - X, p=2, dim=1)
+            ri = torch.norm(fake_X * mask - X, p=2, dim=1)
 
-        z_l.append(z)
-        ri_l.append(ri)
+            z_l.append(z)
+            ri_l.append(ri)
 
     z_l = torch.concatenate(z_l)
     ri_l = torch.concatenate(ri_l)
@@ -152,5 +155,9 @@ def PrewithVAE(dataset, device, batch_size = 32, n_epochs = 500, lr=0.001):
     # 进行 min-max 归一化
     ri_l = (ri_l - min_val) / (max_val - min_val)
 
+    z_l, ri_l = z_l.detach().cpu().numpy(), ri_l.detach().cpu().numpy()
+
+    del model
+
     ## z_l:(num_sample, 5)    ri_l: (num_sample, 1)
-    return z_l.detach().cpu().numpy(), ri_l.detach().cpu().numpy()
+    return z_l, ri_l
