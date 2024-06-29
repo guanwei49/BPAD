@@ -113,7 +113,7 @@ if __name__ == '__main__':
     dataset_names_real.sort()
 
     ads = [
-        # dict(ad=WAKE),  ## Multi-perspective, attr-level    --- WAKE: A Weakly Supervised Business Process Anomaly Detection Framework via a Pre-Trained Autoencoder.
+        dict(ad=WAKE),  ## Multi-perspective, attr-level    --- WAKE: A Weakly Supervised Business Process Anomaly Detection Framework via a Pre-Trained Autoencoder.
         dict(ad=DRL, ad_kwargs=dict(memory_size=2500, num_episodes=15))   ## Control flow, trace-level    --- Deep reinforcement learning for data-efficient weakly supervised business process anomaly detection
     ]
 
