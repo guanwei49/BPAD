@@ -345,8 +345,7 @@ def binet_model_fn(dataset,
     # Define custom loss
     def custom_loss(y_true, y_pred):
         attr_name = y_pred.name.split('_')[1].split('/')[0]
-        return loss_map["name"](y_true, y_pred)
-        # return loss_map[attr_name](y_true, y_pred)
+        return loss_map[attr_name](y_true, y_pred)
 
     # Register it as custom object, so it may be loaded afterwards in conjunction with the model
     from keras.utils.generic_utils import get_custom_objects
