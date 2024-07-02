@@ -101,46 +101,97 @@ class MultiHeadAttention(nn.Module):
         return tensor
 
 
+class PositionwiseFeedForward(nn.Module):
+    def __init__(self, d_model, hidden, drop_prob=0.1):
+        super(PositionwiseFeedForward, self).__init__()
+        self.linear1 = nn.Linear(d_model, hidden)
+        self.linear2 = nn.Linear(hidden, d_model)
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(p=drop_prob)
+
+    def forward(self, x):
+        x = self.linear1(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+        x = self.linear2(x)
+        return x
+
+
+class LayerNorm(nn.Module):
+    def __init__(self, d_model, eps=1e-12):
+        super(LayerNorm, self).__init__()
+        self.gamma = nn.Parameter(torch.ones(d_model))
+        self.beta = nn.Parameter(torch.zeros(d_model))
+        self.eps = eps
+
+    def forward(self, x):
+        mean = x.mean(-1, keepdim=True)
+        var = x.var(-1, unbiased=False, keepdim=True)
+        # '-1' means last dimension.
+
+        out = (x - mean) / torch.sqrt(var + self.eps)
+        out = self.gamma * out + self.beta
+        return out
+
+
 class LSTMAttentionNetwork(nn.Module):
     def __init__(self, input_dim, hidden_dim, output_dim, trace_len):
         super(LSTMAttentionNetwork, self).__init__()
         self.hidden_dim = hidden_dim
         self.lstm = nn.LSTM(input_dim, hidden_dim, batch_first=True)
         self.attention = MultiHeadAttention(d_model=hidden_dim, n_head = 1)
-        self.fc1 = nn.Linear(hidden_dim * trace_len, 2 * hidden_dim * trace_len)
-        self.fc2 = nn.Linear(2 * hidden_dim * trace_len, output_dim)
+        self.norm1 = LayerNorm(d_model=hidden_dim)
+        self.dropout1 = nn.Dropout(p=0.2)
+
+        self.ffn = PositionwiseFeedForward(d_model=hidden_dim, hidden=hidden_dim*2, drop_prob=0.2)
+        self.norm2 = LayerNorm(d_model=hidden_dim)
+        self.dropout2 = nn.Dropout(p=0.2)
+
+        self.fc = nn.Linear(hidden_dim * trace_len, output_dim)
 
     def forward(self, x, mask):
         lstm_out, _ = self.lstm(x)
-        lstm_out = F.relu(lstm_out)
+        x = F.relu(lstm_out)
+        _x = x
 
         mask_att = mask.unsqueeze(1).unsqueeze(1)
-        attention_out = self.attention(q=lstm_out, k=lstm_out, v=lstm_out, mask=mask_att)
+        x = self.attention(q=lstm_out, k=lstm_out, v=lstm_out, mask=mask_att)
 
-        flat = attention_out.masked_fill(mask.unsqueeze(2), 0).flatten(1, 2)
+        x = self.dropout1(x)
+        x = self.norm1(x + _x)
 
-        x = F.relu(self.fc1(flat))
-        x = self.fc2(x)
+        # 3. positionwise feed forward network
+        _x = x
+        x = self.ffn(x)
+
+        # 4. add and norm
+        x = self.dropout2(x)
+        x = self.norm2(x + _x)
+
+
+        flat = x.masked_fill(mask.unsqueeze(2), 0).flatten(1, 2)
+
+        x = self.fc(flat)
 
         return x
 
 
 
 class ReplayBuffer(object):
-    def __init__(self, capacity):
+    def __init__(self, capacity, states, masks):
+        self.states = states
+        self.masks = masks
         self.buffer = deque(maxlen=capacity)
 
-    def push(self, state, mask, action, reward, next_state, next_mask, done):
-        state = np.expand_dims(state, 0)
-        mask = np.expand_dims(mask, 0)
-        next_state = np.expand_dims(next_state, 0)
-        next_mask = np.expand_dims(next_mask, 0)
-
-        self.buffer.append((state, mask, action, reward, next_state, next_mask, done))
+    def push(self, index, action, reward, next_index, done):
+        self.buffer.append((index, action, reward, next_index, done))
 
     def sample(self, batch_size):
-        state, mask, action, reward, next_state, next_mask, done = zip(*random.sample(self.buffer, batch_size))
-        return np.concatenate(state), np.concatenate(mask), action, reward, np.concatenate(next_state), np.concatenate(next_mask), done
+        index, action, reward, next_index, done = zip(*random.sample(self.buffer, batch_size))
+
+        state, mask = self.states[list(index)], self.masks[list(index)]
+        next_state, next_mask = self.states[list(next_index)], self.masks[list(next_index)]
+        return state, mask, action, reward, next_state, next_mask, done
 
     def __len__(self):
         return len(self.buffer)
@@ -148,7 +199,7 @@ class ReplayBuffer(object):
 
 
 class DDQNAgent:
-    def __init__(self, state_dim, hidden_dim, action_dim, trace_len, device, gamma=0.99, lr=1e-3, batch_size=32,
+    def __init__(self, state_dim, hidden_dim, action_dim, trace_len, device, env, gamma=0.99, lr=1e-3, batch_size=32,
                  memory_size=10000):
         self.state_dim = state_dim
         self.action_dim = action_dim
@@ -156,7 +207,7 @@ class DDQNAgent:
         self.gamma = gamma
         self.lr = lr
         self.batch_size = batch_size
-        self.replay_buffer = ReplayBuffer(memory_size)
+        self.replay_buffer = ReplayBuffer(memory_size, env.state_array, env.mask_array)
         self.device = device
 
         self.policy_net = LSTMAttentionNetwork(state_dim, hidden_dim, action_dim,trace_len).to(self.device)
@@ -169,8 +220,8 @@ class DDQNAgent:
         self.target_net.load_state_dict(self.policy_net.state_dict())
         self.target_net.eval()
 
-    def store_transition(self, state, mask, action, reward, next_state, next_mask, done):
-        self.replay_buffer.push(state, mask, action, reward, next_state, next_mask, done)
+    def store_transition(self, index, action, reward, next_index, done):
+        self.replay_buffer.push(index, action, reward, next_index, done)
 
     def update_target_network(self):
         self.target_net.load_state_dict(self.policy_net.state_dict())
@@ -221,14 +272,16 @@ def train_ddqn(agent, env, num_episodes, epsilon_start=1.0, epsilon_end=0.1, eps
 
     total_steps = 0
     for episode in range(num_episodes):
-        state, mask = env.reset()
+        state, mask, index = env.reset()
         total_reward = 0
         for _ in tqdm(range(env.max_steps)):
             action = agent.select_action(state, mask, epsilon)
-            next_state, next_mask, reward, done = env.step(action)
-            agent.store_transition(state, mask, action, reward, next_state, next_mask, done)
+            next_state, next_mask, reward, done, next_index = env.step(action)
+            agent.store_transition(index, action, reward, next_index, done)
             agent.train()
             state = next_state
+            mask = next_mask
+            index = next_index
             total_reward += reward
             total_steps += 1
             if total_steps % 50 == 0:

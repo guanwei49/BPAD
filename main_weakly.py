@@ -114,7 +114,7 @@ if __name__ == '__main__':
 
     ads = [
         dict(ad=WAKE),  ## Multi-perspective, attr-level    --- WAKE: A Weakly Supervised Business Process Anomaly Detection Framework via a Pre-Trained Autoencoder.
-        dict(ad=DRL, ad_kwargs=dict(memory_size=2500, num_episodes=15, hidden_dim=128))   ## Control flow, trace-level    --- Deep reinforcement learning for data-efficient weakly supervised business process anomaly detection
+        dict(ad=DRL, ad_kwargs=dict(memory_size=10000, num_episodes=15, hidden_dim=512))   ## Control flow, trace-level    --- Deep reinforcement learning for data-efficient weakly supervised business process anomaly detection
     ]
 
     # label_percents=[0.01, 0.1]

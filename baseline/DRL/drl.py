@@ -57,7 +57,7 @@ class DRL():
         # 创建DDQN Agent
         self.agent = DDQNAgent(state_dim=dataset.attribute_dims[0], hidden_dim=self.hidden_dim,
                                action_dim=self.action_dim, trace_len=dataset.max_len,
-                               device=self.device, gamma=self.gamma, lr=self.lr, batch_size=self.batch_size,
+                               device=self.device, env=env, gamma=self.gamma, lr=self.lr, batch_size=self.batch_size,
                                memory_size=self.memory_size)
 
         # 训练DDQN Agent

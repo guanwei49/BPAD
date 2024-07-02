@@ -53,7 +53,7 @@ class Env:
         mask = self.mask_array[index]
         self.pre_label = 0
         self.steps = 0
-        return self.pre_state, mask
+        return self.pre_state, mask, index
 
     def step(self, action):
         self.steps += 1
@@ -89,4 +89,4 @@ class Env:
         done = self.steps >= self.max_steps
         # done = False
 
-        return next_state, next_mask, reward, done
+        return next_state, next_mask, reward, done, index
