@@ -8,7 +8,7 @@ from baseline.LAE.model import LSTMAE
 import torch.utils.data as Data
 from torch.utils.data import DataLoader
 class LAE():
-    def __init__(self, batch_size=64, n_epochs=20 ,lr=0.0002 ,b1=0.5 ,b2=0.999 ,seed=None, hidden_size = 64):
+    def __init__(self, batch_size=64, n_epochs=20 ,lr=0.0001 ,b1=0.5 ,b2=0.999 ,seed=None, hidden_size = 64):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.batch_size=batch_size
         self.seed = seed
