@@ -29,7 +29,7 @@ class VAEModel(nn.Module):
         self.fc4 = nn.Linear(layer1, input_size)  # decode
 
         self.relu = nn.ReLU()
-
+        self.dout = nn.Dropout(p=0.2)
 
         # initialize weights
         nn.init.xavier_uniform(self.fc1.weight, gain=np.sqrt(2))
@@ -41,7 +41,9 @@ class VAEModel(nn.Module):
     def encode(self, x):
         # x --> fc1 --> relu --> fc21
         # x --> fc1 --> relu --> fc22
-        h1 = self.relu(self.fc1(x))
+        dx = self.dout(x)
+        h1 = self.relu(self.fc1(dx))
+        h1 = self.dout(h1)
         return self.fc21(h1), self.fc22(h1)
 
     def reparametrize(self, mu, logvar):
@@ -52,7 +54,9 @@ class VAEModel(nn.Module):
 
     def decode(self, z, x):
         # z --> fc3 --> relu --> fc4
-        h3 = self.relu(self.fc3(z))
+        dz = self.dout(z)
+        h3 = self.relu(self.fc3(dz))
+        h3 = self.dout(h3)
         return self.fc4(h3).view(x.size())
 
     def forward(self, x):

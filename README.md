@@ -15,22 +15,31 @@ future directions are discussed in order to promote the evolution of business pr
 
 ### Studied Models
 
+#### 14 unsupervised methods
+
 |   Model    | Year |    Perspective    |   Granularity   |                                                                                                                                Paper                                                                                                                                |
 |:----------:|:----:|:-----------------:|:---------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|   Naive    | 2013 |   Control-flow    |   Trace-level   |                                                 [Algorithms for anomaly detection of traces in logs of process aware information systems](https://www.sciencedirect.com/science/article/abs/pii/S0306437912000567)                                                  |
-|  Sampling  | 2013 |   Control-flow    |   Trace-level   |                                                 [Algorithms for anomaly detection of traces in logs of process aware information systems](https://www.sciencedirect.com/science/article/abs/pii/S0306437912000567)                                                  |
-| Likelihood | 2016 | Multi-perspective | Attribute-level |                                                              [Multi-perspective anomaly detection in business process execution events](https://link.springer.com/chapter/10.1007/978-3-319-48472-3_5)                                                              |
-|    DAE     | 2018 | Multi-perspective | Attribute-level |                                                                       [Analyzing business process anomalies using autoencoders](https://link.springer.com/article/10.1007/s10994-018-5702-8)                                                                        |
-|  BINetv2   | 2018 | Multi-perspective | Attribute-level |                                                            [BINet: Multivariate business process anomaly detection using deep learning](https://link.springer.com/chapter/10.1007/978-3-319-98648-7_16)                                                             |
-|    VAE     | 2019 | Multi-perspective | Attribute-level |                                                                 [Autoencoders for improving quality of process event logs](https://www.sciencedirect.com/science/article/abs/pii/S0957417419302829)                                                                 |
-|    LAE     | 2019 | Multi-perspective | Attribute-level |                                                                 [Autoencoders for improving quality of process event logs](https://www.sciencedirect.com/science/article/abs/pii/S0957417419302829)                                                                 |
+|   Naive    | 2013 |   Control-flow    |   Trace-level   |                                                 [Algorithms for Anomaly Detection of Traces in Logs of Process Aware Information Systems](https://www.sciencedirect.com/science/article/abs/pii/S0306437912000567)                                                  |
+|  Sampling  | 2013 |   Control-flow    |   Trace-level   |                                                 [Algorithms for Anomaly Detection of Traces in Logs of Process Aware Information Systems](https://www.sciencedirect.com/science/article/abs/pii/S0306437912000567)                                                  |
+| Likelihood | 2016 | Multi-perspective | Attribute-level |                                                              [Multi-perspective Anomaly Detection in Business Process Execution Events](https://link.springer.com/chapter/10.1007/978-3-319-48472-3_5)                                                              |
+|    DAE     | 2018 | Multi-perspective | Attribute-level |                                                                       [Analyzing Business Process Anomalies Using Autoencoders](https://link.springer.com/article/10.1007/s10994-018-5702-8)                                                                        |
+|  BINetv2   | 2018 | Multi-perspective | Attribute-level |                                                            [BINet: Multivariate Business Process Anomaly Detection Using Deep Learning](https://link.springer.com/chapter/10.1007/978-3-319-98648-7_16)                                                             |
+|    VAE     | 2019 | Multi-perspective | Attribute-level |                                                                 [Autoencoders for Improving Quality of Process Event Logs](https://www.sciencedirect.com/science/article/abs/pii/S0957417419302829)                                                                 |
+|    LAE     | 2019 | Multi-perspective | Attribute-level |                                                                 [Autoencoders for Improving Quality of Process Event Logs](https://www.sciencedirect.com/science/article/abs/pii/S0957417419302829)                                                                 |
 |  W2V-LOF   | 2020 |   Control-flow    |   Trace-level   |                                                                              [Anomaly Detection on Event Logs with a Scarcity of Labels](https://ieeexplore.ieee.org/document/9230308)                                                                              |
-| VAE-OCSVM  | 2021 |   Control-flow    |   Trace-level   |                                                                      [Variational Autoencoder for Anomaly Detection in Event Data in Online Process Mining](https://arxiv.org/abs/2208.03326)                                                                       |
+| VAE-OCSVM  | 2021 |   Control-flow    |   Trace-level   |                                                                      [Variational Autoencoder for Anomaly Detection in Event Data in Online Process Mining](https://www.semanticscholar.org/paper/Variational-Autoencoder-for-Anomaly-Detection-in-in-Krajsic-Franczyk/010abb71527b0a1f6b38eb83c7503d00a67cb49a)                                                                       |
 |    GAE     | 2021 | Multi-perspective |   Trace-level   |                                                                     [Graph Autoencoders for Business Process Anomaly Detection](https://link.springer.com/chapter/10.1007/978-3-030-85469-0_26)                                                                     |
-|  Leverage  | 2022 |   Control-flow    |   Trace-level   |                                      [Keeping our rivers clean: Information-theoretic online anomaly detection for streaming business process events](https://www.sciencedirect.com/science/article/abs/pii/S0306437921001125)                                      |
-|  BINetv3   | 2022 | Multi-perspective | Attribute-level |                                                             [BINet: Multi-perspective business process anomaly classification](https://www.sciencedirect.com/science/article/abs/pii/S0306437919305101)                                                             |
+|  Leverage  | 2022 |   Control-flow    |   Trace-level   |                                      [Keeping Our Rivers Clean: Information-Theoretic Online Anomaly Detection for Streaming Business Process Events](https://www.sciencedirect.com/science/article/abs/pii/S0306437921001125)                                      |
+|  BINetv3   | 2022 | Multi-perspective | Attribute-level |                                                             [BINet: Multi-perspective Business Process Anomaly Classification](https://www.sciencedirect.com/science/article/abs/pii/S0306437919305101)                                                             |
 |  GRASPED   | 2023 | Multi-perspective | Attribute-level |                                                             [GRASPED: A GRU-AE Network Based Multi-Perspective Business Process Anomaly Detection Model](https://ieeexplore.ieee.org/document/10088425)                                                             |
 |    GAMA    | 2024 | Multi-perspective | Attribute-level | [GAMA: A Multi-graph-based Anomaly Detection Framework for Business Processes via Graph Neural Networks](https://www.techrxiv.org/articles/preprint/GAMA_A_Multi-graph-based_Anomaly_Detection_Framework_for_Business_Processes_via_Graph_Neural_Networks/23627850) |
+
+#### 2 weakly-supervised methods
+
+| Model | Year |    Perspective    |   Granularity   |                                                                                Paper                                                                                |
+|:-----:|:----:|:-----------------:|:---------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  DRL  | 2023 |   Control-flow    |   Trace-level   | [Deep Reinforcement Learning for Data-efficient Weakly Supervised Business Process Anomaly Detection](https://link.springer.com/article/10.1186/s40537-023-00708-5) |
+| WAKE  | 2024 | Multi-perspective | Attribute-level |   [WAKE: A Weakly Supervised Business Process Anomaly Detection Framework via a Pre-Trained Autoencoder](https://ieeexplore.ieee.org/abstract/document/10285076)    |
 
 ## Requirements
 
@@ -61,7 +70,8 @@ future directions are discussed in order to promote the evolution of business pr
     ```
     python \generator\gen_anomalous_eventlog_syn.py  # get the synthetic dataset with anomalies
     python \generator\gen_anomalous_real_life_log.py  # get the real-life dataset with anomalies
-    python main_unsup.py # get the result for each method.
+    python main_unsup.py # get the result for each unsupervised method.
+    python main_weakly.py # get the result for each weakly supervised method.
     ```
 
 ## Datasets
@@ -78,17 +88,22 @@ applications over a period of approximately four years.
 iv) **_[BPIC17](https://doi.org/10.4121/uuid:5f3067df-f10b-45da-b98b-86ae4c7a310b)_**: This event log pertains to a loan application process of a Dutch financial institute. The data
 contains all applications filed through an online system in 2016 and their subsequent events until February 1st 2017, 15:11.
 
-v) **_[BPIC20](https://doi.org/10.4121/uuid:52fb97d4-4588-43c9-9d04-3604d4613b51)_**: The dataset contains events pertaining to two years of travel expense claims. In 2017, events were
+v) **_[BPIC20](https://doi.org/10.4121/uuid:52fb97d4-4588-43c9-9d04-3604d4613b51)_**: The dataset contains events
+pertaining to two years of travel expense claims. In 2017, events were
 collected for two departments, in 2018 for the entire university.
 
-vi) **_[Billing](https://doi.org/10.4121/uuid:76c46b83-c930-4798-a1c9-4be94dfeb741)_**: This log contains events that pertain to the billing of medical services provided by a hospital.
+vi) **_[Billing](https://doi.org/10.4121/uuid:76c46b83-c930-4798-a1c9-4be94dfeb741)_**: This log contains events that
+pertain to the billing of medical services provided by a hospital.
 
-vii) **_[Receipt](https://doi.org/10.4121/12709127.v2)_**: This log contains records of the receiving phase of the building permit application process in an
+vii) **_[Receipt](https://doi.org/10.4121/12709127.v2)_**: This log contains records of the receiving phase of the
+building permit application process in an
 anonymous municipality.
 
-viii) **_[RTFMP](https://doi.org/10.4121/uuid:270fd440-1057-4fb9-89a9-b699b47990f5)_**: Real-life event log of an information system managing road traffic fines.
-    
-ix) **_[Sepsis](https://doi.org/10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460)_**: This log contains events of sepsis cases from a hospital.
+viii) **_[RTFMP](https://doi.org/10.4121/uuid:270fd440-1057-4fb9-89a9-b699b47990f5)_**: Real-life event log of an
+information system managing road traffic fines.
+
+ix) **_[Sepsis](https://doi.org/10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460)_**: This log contains events of
+sepsis cases from a hospital.
 
 Eight synthetic logs: i.e., **_Paper_**,  _**P2P**_, **_Small_**, **_Medium_**, **_Large_**, **_Huge_**, **_Gigantic_**,
 and **_Wide_**.

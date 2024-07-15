@@ -8,7 +8,7 @@ import torch.nn.functional as F
 import torch.utils.data as Data
 from torch.utils.data import DataLoader
 class VAE():
-    def __init__(self, batch_size=64, n_epochs=20 ,lr=0.0001 ,b1=0.5 ,b2=0.999 ,seed=None, hidden_size = 64):
+    def __init__(self, batch_size=16, n_epochs=100 ,lr=0.0001 ,b1=0.9 ,b2=0.999 ,seed=None, hidden_size = 64):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.batch_size=batch_size
         self.seed = seed
@@ -44,7 +44,7 @@ class VAE():
 
         optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, betas=(self.b1, self.b2))
 
-        scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
+        scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.99)
 
         print("*" * 10 + "training" + "*" * 10)
         for epoch in range(int(self.n_epochs)):
