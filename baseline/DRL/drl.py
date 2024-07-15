@@ -49,7 +49,6 @@ class DRL():
 
     def fit(self, dataset):
         z_array, ri_array = PrewithVAE(dataset, self.device, n_epochs=500)
-        # z_array, ri_array = PrewithVAE(dataset, self.device, n_epochs=100)
 
         # 创建环境
         env = Env(dataset, z_array, ri_array,self.steps)
