@@ -34,9 +34,8 @@ class DAE(NNAnomalyDetector):
     supported_bases = [Base.LEGACY, Base.SCORES]
     supports_attributes = True
 
-    # config = dict(hidden_layers=2,
-    config = dict(hidden_layers=1,
-                  hidden_size_factor=.1,
+    config = dict(hidden_layers=2,
+                  hidden_size_factor=.01,
                   noise=None)
 
     def __init__(self, model=None):
@@ -84,11 +83,7 @@ class DAE(NNAnomalyDetector):
                 factor = hidden_size_factor[i]
             else:
                 factor = hidden_size_factor
-            # x = Dense(int(input_size * factor), activation='relu', name=f'hid{i + 1}')(x)
-            # x = Dropout(0.5)(x)
-            x = Dense(int(256), activation='relu', name=f'hid{i + 1}')(x)
-            x = Dropout(0.5)(x)
-            x = Dense(int(128), activation='relu', name=f'hid{i + 2}')(x)
+            x = Dense(max(int(input_size * factor),64), activation='relu', name=f'hid{i + 1}')(x)
             x = Dropout(0.5)(x)
 
         # Output layer
@@ -128,31 +123,37 @@ class DAE(NNAnomalyDetector):
             features = features[:, :input_size]
 
         predictions=[]
-        batch_size=1024
+        batch_size = 128
         i=0
         while features.shape[0]>=batch_size*i:
             predictions.append( self.model.predict(features[batch_size*i:batch_size*(i+1)], verbose=True))
             i += 1
 
-        # Get predictions
-        # predictions = self.model.predict(features,verbose=True)
-
         predictions= np.concatenate(predictions, 0)
+
         # Calculate error
-        errors = np.power(features - predictions, 2)
+        errors = np.power(dataset.flat_onehot_features_2d - predictions, 2)
+        errors = errors * np.expand_dims(~dataset.mask, 2).repeat(dataset.attribute_dims.sum(), 2).reshape(
+            dataset.mask.shape[0], -1)
+
+        trace_level_abnormal_scores = errors.sum(1) / (dataset.case_lens * dataset.attribute_dims.sum())
+
+        # Split the errors according to the events
+        split_event = np.cumsum(np.tile(dataset.attribute_dims.sum(), [dataset.max_len]), dtype=int)[:-1]
+        errors_event = np.split(errors, split_event, axis=1)
+        errors_event = np.array([np.mean(a, axis=1) if len(a) > 0 else 0.0 for a in errors_event])
+        event_level_abnormal_scores = errors_event.T
 
         # Split the errors according to the attribute dims
         split = np.cumsum(np.tile(dataset.attribute_dims, [dataset.max_len]), dtype=int)[:-1]
-        errors = np.split(errors, split, axis=1)
-        errors = np.array([np.mean(a, axis=1) if len(a) > 0 else 0.0 for a in errors])
+        errors_attr = np.split(errors, split, axis=1)
+        errors_attr = np.array([np.mean(a, axis=1) if len(a) > 0 else 0.0 for a in errors_attr])
 
         # Init anomaly scores array
-        scores = np.zeros(dataset.binary_targets.shape)
+        attr_level_abnormal_scores = np.zeros(dataset.binary_targets.shape)
 
         for i in range(len(dataset.attribute_dims)):
-            error = errors[i::len(dataset.attribute_dims)]
-            scores[:, :, i] = error.T
+            error = errors_attr[i::len(dataset.attribute_dims)]
+            attr_level_abnormal_scores[:, :, i] = error.T
 
-        trace_level_abnormal_scores = scores.max((1, 2))
-        event_level_abnormal_scores = scores.max((2))
-        return trace_level_abnormal_scores,event_level_abnormal_scores,scores
+        return trace_level_abnormal_scores, event_level_abnormal_scores, attr_level_abnormal_scores

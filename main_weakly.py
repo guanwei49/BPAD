@@ -3,6 +3,7 @@ import traceback
 import time
 # import mlflow
 from multiprocessing import Process
+import multiprocessing
 
 import pandas as pd
 
@@ -93,6 +94,8 @@ def fit_and_eva(dataset_name, ad, label_percent, fit_kwargs=None, ad_kwargs=None
 
 
 if __name__ == '__main__':
+    multiprocessing.set_start_method('spawn')
+
     dataset_names = os.listdir(EVENTLOG_DIR)
     dataset_names.sort()
     if 'cache' in dataset_names:

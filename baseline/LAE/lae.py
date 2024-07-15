@@ -8,7 +8,7 @@ from baseline.LAE.model import LSTMAE
 import torch.utils.data as Data
 from torch.utils.data import DataLoader
 class LAE():
-    def __init__(self, batch_size=16, n_epochs=100 ,lr=0.0001 ,b1=0.9 ,b2=0.999 ,seed=None, hidden_size = 64):
+    def __init__(self, batch_size=16, n_epochs=100, lr=0.0001 ,b1=0.9 ,b2=0.999 ,seed=None, hidden_size = 64):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.batch_size=batch_size
         self.seed = seed
@@ -91,50 +91,43 @@ class LAE():
         detect_dataloader = DataLoader(tensorDataset, batch_size=self.batch_size,
                                        shuffle=False, num_workers=0, pin_memory=True)
 
-        attr_Shape = (dataset.num_cases, dataset.max_len, dataset.num_attributes)
-
         self.model.eval()
-        attribute_dim_index = torch.LongTensor(
-            [sum(dataset.attribute_dims[:i + 1]) for i in range(len(dataset.attribute_dims))])
-        criterion = nn.MSELoss()
 
-        index = -1
-        trace_level_abnormal_scores = []
-        attr_level_abnormal_scores = np.zeros(attr_Shape)
-        event_level_abnormal_scores = np.zeros((attr_Shape[0], attr_Shape[1]))
+        predictions = []
         for X, case_len in tqdm(detect_dataloader):
             X = X.to(self.device)
 
             fake_X = self.model(X)
 
-            for trace_i in range(X.shape[0]):
-                one_X = X[trace_i]
-                one_fake_X = fake_X[trace_i]
-                index += 1
-                one_fake_X = one_fake_X.flatten()
-                one_X = one_X.flatten()
+            fake_X = fake_X.flatten(1, 2)
 
-                loss_X = criterion(one_fake_X[:case_len[trace_i] * attribute_dim_index[-1]],
-                                   one_X[:case_len[trace_i] * attribute_dim_index[-1]])
+            predictions.append(fake_X.detach().cpu().numpy())
 
-                anomaly_score = loss_X
+        predictions = np.concatenate(predictions, axis=0)
 
-                trace_level_abnormal_scores.append(anomaly_score.cpu().item())
+        # Calculate error
+        errors = np.power(dataset.flat_onehot_features_2d - predictions, 2)
+        errors = errors * np.expand_dims(~dataset.mask, 2).repeat(dataset.attribute_dims.sum(), 2).reshape(
+            dataset.mask.shape[0], -1)
 
-                lastend = 0
-                for i in range(case_len[trace_i]):
-                    for j in range(len(attribute_dim_index)):
-                        end = int(i * attribute_dim_index[-1] + attribute_dim_index[j])
-                        attr_level_abnormal_scores[index][i][j] = criterion(one_fake_X[lastend:end], one_X[lastend:end])
-                        lastend = end
+        trace_level_abnormal_scores = errors.sum(1) / (dataset.case_lens * dataset.attribute_dims.sum())
 
-                lastend = 0
-                for i in range(case_len[trace_i]):
-                    end = int((i + 1) * attribute_dim_index[-1])
-                    event_score = criterion(one_fake_X[lastend:end], one_X[lastend:end])
-                    lastend = end
-                    event_level_abnormal_scores[index][i] = event_score
+        # Split the errors according to the events
+        split_event = np.cumsum(np.tile(dataset.attribute_dims.sum(), [dataset.max_len]), dtype=int)[:-1]
+        errors_event = np.split(errors, split_event, axis=1)
+        errors_event = np.array([np.mean(a, axis=1) if len(a) > 0 else 0.0 for a in errors_event])
+        event_level_abnormal_scores = errors_event.T
 
-        trace_level_abnormal_scores = np.array(trace_level_abnormal_scores)
+        # Split the errors according to the attribute dims
+        split = np.cumsum(np.tile(dataset.attribute_dims, [dataset.max_len]), dtype=int)[:-1]
+        errors_attr = np.split(errors, split, axis=1)
+        errors_attr = np.array([np.mean(a, axis=1) if len(a) > 0 else 0.0 for a in errors_attr])
+
+        # Init anomaly scores array
+        attr_level_abnormal_scores = np.zeros(dataset.binary_targets.shape)
+
+        for i in range(len(dataset.attribute_dims)):
+            error = errors_attr[i::len(dataset.attribute_dims)]
+            attr_level_abnormal_scores[:, :, i] = error.T
 
         return trace_level_abnormal_scores, event_level_abnormal_scores, attr_level_abnormal_scores
