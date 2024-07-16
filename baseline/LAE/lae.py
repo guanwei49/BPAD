@@ -36,7 +36,7 @@ class LAE():
         attribute_dim_index = torch.LongTensor(
             [sum(dataset.attribute_dims[:i + 1]) for i in range(len(dataset.attribute_dims))])
 
-        self.model = LSTMAE(int(dataset.flat_onehot_features.shape[-1]), self.hidden_size, num_layers=2, isCuda=(self.device.type == 'cuda'))
+        self.model = LSTMAE(int(dataset.flat_onehot_features.shape[-1]), self.hidden_size, num_layers=2, device=self.device)
         loss_func = nn.MSELoss()
 
         self.model.to(self.device)
