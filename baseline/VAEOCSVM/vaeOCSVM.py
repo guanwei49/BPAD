@@ -42,7 +42,7 @@ class VAEOCSVM():
         dataloader = DataLoader(tensorDataset, batch_size=self.batch_size, shuffle=True, num_workers=0, pin_memory=True,
                                 drop_last=True)
 
-        self.model =  VAEModel(int(X.shape[-1]), int(self.hidden_size * 3), self.hidden_size, isCuda=(self.device.type == 'cuda'))
+        self.model =  VAEModel(int(X.shape[-1]), int(self.hidden_size * 3), self.hidden_size, device=self.device)
 
         self.model.to(self.device)
 

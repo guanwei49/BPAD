@@ -15,7 +15,7 @@ future directions are discussed in order to promote the evolution of business pr
 
 ### Studied Models
 
-#### 14 unsupervised methods
+#### Fourteen unsupervised methods
 
 |   Model    | Year |    Perspective    |   Granularity   |                                                                                                                                Paper                                                                                                                                |
 |:----------:|:----:|:-----------------:|:---------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -34,7 +34,7 @@ future directions are discussed in order to promote the evolution of business pr
 |  GRASPED   | 2023 | Multi-perspective | Attribute-level |                                                             [GRASPED: A GRU-AE Network Based Multi-Perspective Business Process Anomaly Detection Model](https://ieeexplore.ieee.org/document/10088425)                                                             |
 |    GAMA    | 2024 | Multi-perspective | Attribute-level | [GAMA: A Multi-graph-based Anomaly Detection Framework for Business Processes via Graph Neural Networks](https://www.techrxiv.org/articles/preprint/GAMA_A_Multi-graph-based_Anomaly_Detection_Framework_for_Business_Processes_via_Graph_Neural_Networks/23627850) |
 
-#### 2 weakly-supervised methods
+#### Two weakly-supervised methods
 
 | Model | Year |    Perspective    |   Granularity   |                                                                                Paper                                                                                |
 |:-----:|:----:|:-----------------:|:---------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
