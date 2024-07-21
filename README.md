@@ -109,7 +109,7 @@ sepsis cases from a hospital.
 Eight synthetic logs: i.e., **_Paper_**,  _**P2P**_, **_Small_**, **_Medium_**, **_Large_**, **_Huge_**, **_Gigantic_**,
 and **_Wide_**.
 
-The summary of statistics for each event log is presented below:
+The summary of statistics for each event log (without anomalies) is presented below:
 
 |    Log     | #Activities | #Traces |   #Events   | Max trace length | Min trace length | #Attributes | #Attribute values |
 |:----------:|:-----------:|:-------:|:-----------:|:----------------:|:----------------:|:-----------:|:-----------------:|
@@ -140,6 +140,19 @@ The summary of statistics for each event log is presented below:
 |  Receipt   |     27      |  1434   |    8577     |        25        |        1         |      2      |        58         |
 |   RTFMP    |     11      | 150370  |   561470    |        20        |        2         |      0      |         0         |
 |   Sepsis   |     16      |  1050   |    15214    |       185        |        3         |      1      |        26         |
+
+To simulate anomalous behavior, we inject artificial anomalies of six different types, with a proportion of $\rho$ percent (i.e., $\rho$ percent of the traces are anomalous)  into both synthetic and real-life logs.  
+In our experiments, we assess the scalability of methods by considering values of $\rho$ at 5, 10, 15, 20, 25, 30, 35, 40, and 45.
+To provide clarity, we define these anomaly types as follows:
+![anomaly_type.png](pic/anomaly_type.png)
+  - _Skip_: Bypassing a series of up to two events.
+  - _Insert_: Interjecting a series of up to two random events.
+  - _Rework_: Repeatedly carrying out a series of up to three events.
+  - _Early_:  Executing up to two events prematurely, causing them to be bypassed at their subsequent designated point.
+  - _Late_: Postponing the execution of up to two events, causing them to be bypassed at their earlier designated point.
+  - _Attribute_: In up to two certain events, substituting the correct values of certain attributes with erroneous ones.
+
+
 
 ## Experiment Results
 
