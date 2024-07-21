@@ -7,8 +7,10 @@ from sklearn.neighbors import LocalOutlierFactor
 from sklearn.preprocessing import StandardScaler
 
 class W2VLOF():
-    def __init__(self):
+    def __init__(self,window=3, min_count=1):
         self.name= 'W2V-LOF'
+        self.window = window
+        self.min_count = min_count
 
     def create_models(self, cases, window, min_count):
         '''
@@ -51,7 +53,7 @@ class W2VLOF():
             else:
                 cases.append(list(map(str, case)))
         # generate model
-        self.word2vecModel = self.create_models(cases, 3, 1)
+        self.word2vecModel = self.create_models(cases, self.window, self.min_count)
         # calculating the average feature vector for each sentence (trace)
         vectors = self.average_feature_vector(cases, self.word2vecModel)
         # normalization

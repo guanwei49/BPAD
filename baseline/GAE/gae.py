@@ -7,7 +7,7 @@ from baseline.GAE.model import GAEModel
 from torch_geometric.data import Data, Batch
 
 class GAE():
-    def __init__(self, seed=None ,batch_size=64, n_epochs=20, lr=0.0005 ,b1=0.5 ,b2=0.999, hidden_dim=64):
+    def __init__(self, seed=None ,batch_size=64, n_epochs=20, lr=0.0005 ,b1=0.5 ,b2=0.999):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.seed = seed
         self.n_epochs = n_epochs
@@ -15,7 +15,6 @@ class GAE():
         self.b1 =b1
         self.b2 =b2
         self.batch_size = batch_size
-        self.hidden_dim =hidden_dim
         self.name='GAE'
         if type(self.seed) is int:
             torch.manual_seed(self.seed)
@@ -23,9 +22,9 @@ class GAE():
 
     def fit(self, dataset):
         if dataset.trace_graphs_GAE[0].edge_attr is not None:
-            self.model = GAEModel(int(dataset.attribute_dims[0]), self.hidden_dim, self.device, True, len(dataset.trace_graphs_GAE[0].edge_attr[0]))
+            self.model = GAEModel(int(dataset.attribute_dims[0]), 2* int(dataset.attribute_dims[0]), self.device, True, len(dataset.trace_graphs_GAE[0].edge_attr[0]))
         else:
-            self.model = GAEModel(int(dataset.attribute_dims[0]), self.hidden_dim,self.device)
+            self.model = GAEModel(int(dataset.attribute_dims[0]), 2* int(dataset.attribute_dims[0]),self.device)
         loss_func = nn.BCELoss()
 
         self.model.to(self.device)
