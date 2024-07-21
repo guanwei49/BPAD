@@ -37,7 +37,7 @@ class W2VLOF():
                     case_vector.append(model.wv[token])
                 except KeyError:
                     pass
-            vectors.append(np.array(case_vector).mean(axis=0))    #作者实现中没有使用double类型，导致mean计算精度不够，即使内容相同计算出来的mean_vector也不同，所以一些数据集上表现还可以。但是实际上是无法检测early，late等异常类型。
+            vectors.append(np.array(case_vector).mean(axis=0))  # In the original author's implementation, the `np.double` type was not used, resulting in insufficient precision for mean calculations. Even when the content is identical, the computed `mean_vector` can differ. This limitation leads to acceptable performance on some datasets, but in reality, it cannot detect anomalies such as ‘early’ or ‘late’ type.
 
         return vectors
 
