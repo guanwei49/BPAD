@@ -34,6 +34,9 @@ Finally, some future directions are discussed in order to promote the evolution 
 |  DRL  | 2023 |   Control-flow    |   Trace-level   | [Deep Reinforcement Learning for Data-efficient Weakly Supervised Business Process Anomaly Detection](https://link.springer.com/article/10.1186/s40537-023-00708-5) |
 | WAKE  | 2024 | Multi-perspective | Attribute-level |   [WAKE: A Weakly Supervised Business Process Anomaly Detection Framework via a Pre-Trained Autoencoder](https://ieeexplore.ieee.org/abstract/document/10285076)    |
 
+
+**In general, 10% of anomalies are labeled during training in these weakly-supervised methods.**
+
 ## Requirements
 
 ### Win
