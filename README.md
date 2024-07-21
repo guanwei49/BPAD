@@ -64,8 +64,8 @@ Finally, some future directions are discussed in order to promote the evolution 
 ## Examples
 
     ```
-    python \generator\gen_anomalous_eventlog_syn.py  # get the synthetic dataset with anomalies
-    python \generator\gen_anomalous_real_life_log.py  # get the real-life dataset with anomalies
+    python \generator\gen_anomalous_eventlog_syn.py  # Generate synthetic datasets (event logs) containing anomalies and save them into the 'eventlogs' directory.
+    python \generator\gen_anomalous_real_life_log.py  # Generate real-life datasets (event logs) containing anomalies and save them into the 'eventlogs' directory.
     python main_unsup.py # get the result for each unsupervised method.
     python main_weakly.py # get the result for each weakly-supervised method.
     ```
