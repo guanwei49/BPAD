@@ -6,9 +6,16 @@ In this paper, we present a systematic literature review and taxonomy of busines
 Our analysis provides insights into the strengths and weaknesses of different anomaly detection methods. Ultimately, our findings can help researchers and practitioners in the field of process mining make informed decisions when selecting and applying anomaly detection methods to real-life business scenarios.
 Finally, some future directions are discussed in order to promote the evolution of business process anomaly detection.
 
-### Studied Models
+## Appendix Tables
+![A1.png](pic/A1.png)
+![A2.png](pic/A2.png)
+![A3.png](pic/A3.png)
+![A4.png](pic/A4.png)
+![A5.png](pic/A5.png)
 
-#### Fourteen unsupervised methods
+## Studied Models
+
+### Fourteen unsupervised methods
 
 |   Model    | Year |    Perspective    |   Granularity   |                                                                                                                                Paper                                                                                                                                |
 |:----------:|:----:|:-----------------:|:---------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -27,7 +34,7 @@ Finally, some future directions are discussed in order to promote the evolution 
 |  GRASPED   | 2023 | Multi-perspective | Attribute-level |                                                             [GRASPED: A GRU-AE Network Based Multi-Perspective Business Process Anomaly Detection Model](https://ieeexplore.ieee.org/document/10088425)                                                             |
 |    GAMA    | 2024 | Multi-perspective | Attribute-level | [GAMA: A Multi-graph-based Anomaly Detection Framework for Business Processes via Graph Neural Networks](https://www.techrxiv.org/articles/preprint/GAMA_A_Multi-graph-based_Anomaly_Detection_Framework_for_Business_Processes_via_Graph_Neural_Networks/23627850) |
 
-#### Two weakly-supervised methods
+### Two weakly-supervised methods
 
 | Model | Year |    Perspective    |   Granularity   |                                                                                Paper                                                                                |
 |:-----:|:----:|:-----------------:|:---------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
