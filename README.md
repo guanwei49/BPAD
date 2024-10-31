@@ -244,3 +244,18 @@ Average precision (_AP_) of attribute-level anomaly detection:
 |  GRASPED   |   0.553   |   0.626   |   0.640   |   0.567   |   0.537   |   0.603   |   0.560   |   0.516   |   0.413   | **0.473** | **0.300** |   0.313   |   0.287   |   0.252   |   0.310   |   0.298   |   0.308   | **0.461** |   0.280   |   0.462   |   0.443    |   0.455    |   0.356   |   0.005   |   0.478   |   0.015   |   0.279   | 
 |    GAMA    | **0.666** | **0.718** | **0.716** | **0.682** | **0.689** | **0.721** | **0.737** | **0.690** | **0.524** |   0.350   |   0.252   |   0.332   |   0.209   |   0.250   |   0.316   |   0.246   |   0.222   |   0.422   |   0.541   | **0.592** | **0.555**  | **0.639**  | **0.573** |   0.366   | **0.555** |   0.484   |   0.363   |   
 |    WAKE    |   0.566   |   0.696   |   0.706   |   0.602   |   0.608   |   0.665   |   0.636   |   0.597   |   0.398   |   0.413   |   0.171   | **0.359** | **0.306** | **0.337** | **0.396** | **0.369** | **0.353** |   0.379   |   0.226   |   0.499   |   0.374    |   0.522    |   0.303   |   0.041   |   0.543   |   0.048   | **0.445** |   
+
+
+## To Cite Our Paper
+```
+@ARTICLE{10738505,
+  author={Guan, Wei and Cao, Jian and Zhao, Haiyan and Gu, Yang and Qian, Shiyou},
+  journal={IEEE Transactions on Knowledge and Data Engineering}, 
+  title={Survey and Benchmark of Anomaly Detection in Business Processes}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-23},
+  keywords={Business;Anomaly detection;Surveys;Benchmark testing;Process control;Streams;Process mining;Source coding;Organizations;Measurement;Business process;anomaly detection;event log quality;process mining},
+  doi={10.1109/TKDE.2024.3484159}}
+```
