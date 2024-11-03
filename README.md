@@ -1,5 +1,7 @@
 # Survey and Benchmark of Anomaly Detection in Business Processes
 
+This is the source code of our paper '[Survey and Benchmark of Anomaly Detection in Business Processes](https://ieeexplore.ieee.org/abstract/document/10738505)'.
+
 **Abstract**: Effective management of business processes is crucial for organizational success. However, despite meticulous design and implementation, anomalies are inevitable and can result in inefficiencies, delays, or even significant financial losses.
 Numerous methods for detecting anomalies in business processes have been proposed recently. However, there is no comprehensive benchmark to evaluate these methods. Consequently, the relative merits of each method remain unclear due to differences in their experimental setup, choice of datasets and evaluation measures.
 In this paper, we present a systematic literature review and taxonomy of business process anomaly detection methods. Additionally,  we select at least one method from each category, resulting in 16 methods that are cross-benchmarked against 32 synthetic logs and 19 real-life logs from different industry domains.
