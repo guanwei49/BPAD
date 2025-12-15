@@ -89,12 +89,13 @@ class VAEOCSVM():
 
         self.model.eval()
         zs=[]
-        for X in tqdm(detect_dataloader):
-            X = X[0].to(self.device)
+        with torch.no_grad():
+            for X in tqdm(detect_dataloader):
+                X = X[0].to(self.device)
 
-            fake_X, _, _, z = self.model(X)
+                fake_X, _, _, z = self.model(X)
 
-            zs.append(z)
+                zs.append(z)
 
         zs=torch.cat(zs,dim=0)
 
