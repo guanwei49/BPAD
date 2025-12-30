@@ -18,7 +18,7 @@ def get_log_files(path=None):
     ROOT_DIR = Path(__file__).parent
 
     if path is None:
-        path = os.path.join(ROOT_DIR/'real-life_Logs') # Randomly generated process models from PLG2
+        path = os.path.join(ROOT_DIR/'real-life_Logs')   # Path to dir containing real-life logs.
     return [os.path.join(path,f) for f in os.listdir(path)]
 
 
