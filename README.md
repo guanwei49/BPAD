@@ -258,5 +258,6 @@ Average precision (_AP_) of attribute-level anomaly detection:
   volume={37},
   number={1},
   pages={493-512},
-  doi={10.1109/TKDE.2024.3484159}}
+  doi={10.1109/TKDE.2024.3484159}
+}
 ```
