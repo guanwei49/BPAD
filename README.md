@@ -254,10 +254,9 @@ Average precision (_AP_) of attribute-level anomaly detection:
   author={Guan, Wei and Cao, Jian and Zhao, Haiyan and Gu, Yang and Qian, Shiyou},
   journal={IEEE Transactions on Knowledge and Data Engineering}, 
   title={Survey and Benchmark of Anomaly Detection in Business Processes}, 
-  year={2024},
-  volume={},
-  number={},
-  pages={1-23},
-  keywords={Business;Anomaly detection;Surveys;Benchmark testing;Process control;Streams;Process mining;Source coding;Organizations;Measurement;Business process;anomaly detection;event log quality;process mining},
+  year={2025},
+  volume={37},
+  number={1},
+  pages={493-512},
   doi={10.1109/TKDE.2024.3484159}}
 ```
